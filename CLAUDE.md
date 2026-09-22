@@ -6,9 +6,15 @@ not moving its tickets. (If you are in the GamePlanning repo instead, see
 
 ## Orientation
 
-- `src/lib/tickets.ts` holds every read and write. The `If-Match` check lives inside the `UPDATE`'s
+- `src/lib/tickets.ts` holds every read and write. The version check lives inside the `UPDATE`'s
   `WHERE` clause on purpose — do not lift it out into a read-then-write, or two agents racing on one
   ticket can both succeed.
+- Optimistic concurrency travels as `If-Match-Version`, **not** the standard `If-Match`. Vercel
+  evaluates `If-Match` against the response ETag and rewrites a successful 200 into a 412 *after*
+  the row has been written, so the caller sees a failure for a change that actually landed.
+  `generateEtags: false` in `next.config.ts` is the other half of that fix. Do not remove either
+  without re-testing a successful pinned PATCH against a real deployment — it passes locally either
+  way, which is exactly how this got shipped the first time.
 - `src/lib/link.ts` must stay free of database imports. It is shared with the client, and pulling
   `tickets.ts` into it drags `pg` into the browser bundle. `linkPlan.ts` is the server-only half and
   is marked `server-only` to keep that honest.

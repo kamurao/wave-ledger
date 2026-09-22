@@ -13,7 +13,8 @@ export function WorkflowTab({ origin }: { origin: string }) {
 
   const claudeMd = `Board: ${origin} — tickets are at ${origin}/api/tickets.
 Before starting work: GET /api/tickets, match the prompt to a ticket by title/keywords.
-  todo        -> PATCH it to in_progress with assignee + branch (If-Match its version)
+  todo        -> PATCH it to in_progress with assignee + branch
+                 (If-Match-Version: the version you just read)
   not found   -> POST a new one, id "t-<slug>", status in_progress
   in_progress -> leave it; refresh branch if it changed
 When the work is committed: PATCH status to done.
@@ -63,7 +64,7 @@ curl -X PATCH ${origin}/api/tickets/t-frost-tower \\
             <li>
               If it sits in <span className="st todo">To do</span>, PATCH it to{" "}
               <span className="st in_progress">In progress</span> with the assignee and the current
-              git branch, pinned with <code>If-Match</code> on the version it just read.
+              git branch, pinned with <code>If-Match-Version</code> on the version it just read.
             </li>
             <li>
               If no ticket matches, POST a new one with id <code>t-&lt;slug&gt;</code>, straight
@@ -123,8 +124,10 @@ curl -X PATCH ${origin}/api/tickets/t-frost-tower \\
               <code>section</code> is the list a ticket came from (KEN, FRANCO, SHAUN or Unsorted).
             </li>
             <li>
-              <code>version</code> increments on every write. Send it back as <code>If-Match</code>{" "}
-              and a stale write gets a <code>409</code> instead of clobbering someone.
+              <code>version</code> increments on every write. Send it back as{" "}
+              <code>If-Match-Version</code> and a stale write gets a <code>409</code> instead of
+              clobbering someone. Not the standard <code>If-Match</code>: a CDN can answer{" "}
+              <code>412</code> for that one after the write has already landed.
             </li>
           </ul>
         </div>
@@ -132,11 +135,16 @@ curl -X PATCH ${origin}/api/tickets/t-frost-tower \\
         <div>
           <h2>Who can write</h2>
           <p>
-            Anyone with the link can read the board. Writing needs either a GitHub sign-in on the
-            allowlist, or an agent token. If you cannot write, edit a ticket anyway and press{" "}
-            <strong>Copy link</strong>: that composes a URL carrying your change, which anyone with
-            write access can open and apply in one click. Composing needs no permission; applying
-            does.
+            This board is running <strong>open</strong>: anyone with the link can add, edit and move
+            tickets, with no sign-in. Deleting is the one thing held back — move a ticket to Complete
+            instead — so nothing anyone does here is unrecoverable. Agents still send a token, so
+            their writes stay attributable.
+          </p>
+          <p>
+            Set who you are in <strong>Working as</strong> before you start; that is the name the
+            history records. If the board is ever switched to sign-in only, editing a ticket and
+            pressing <strong>Copy link</strong> composes a URL carrying your change for someone with
+            write access to apply. Composing needs no permission; applying does.
           </p>
           <div className="pre">
             <pre>{`${origin}/?add=Frost%20tower%20rework&kind=feature&section=KEN

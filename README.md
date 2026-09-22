@@ -172,9 +172,16 @@ Two rules make this safe for two agents on one board:
 
 - **Every mutation appends its own `ticket_events` row server-side.** Callers never hand-maintain
   history, and never touch `updated_at`.
-- **`PATCH` honours `If-Match` against `version`** and returns `409` with the current row on a
-  mismatch. The check is folded into the `UPDATE`'s own `WHERE` clause, so the compare and the write
-  are one statement — two racing writers cannot both win.
+- **`PATCH` honours `If-Match-Version` against `version`** and returns `409` with the current row on
+  a mismatch. The check is folded into the `UPDATE`'s own `WHERE` clause, so the compare and the
+  write are one statement — two racing writers cannot both win. The version can travel as
+  `if_version` in the JSON body instead, if that is easier.
+
+  It is deliberately **not** the standard `If-Match` header. A CDN is entitled to evaluate that one
+  against the response ETag and answer `412` itself — which on Vercel happens *after* the row has
+  already been written, so the caller sees a failure for a change that landed and a retry
+  double-applies it. Plain `If-Match` is still read as a last resort so older callers degrade rather
+  than break, but nothing should depend on it.
 
 ```bash
 # claim a ticket
@@ -264,7 +271,7 @@ src/components/     the board UI (client) and auth buttons (server)
 src/lib/            schema, data access, auth, link parsing
   link.ts           update-by-link, the half with no database in it
   linkPlan.ts       resolving a link against the board (server-only)
-  tickets.ts        every read and write, including the If-Match update
+  tickets.ts        every read and write, including the version-pinned update
 drizzle/            the schema as SQL
 scripts/            migrate and seed
 seed-data/tickets/  the 28 tickets exported from the artifact
