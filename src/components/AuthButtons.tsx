@@ -6,6 +6,18 @@ import type { Viewer } from "@/lib/types";
  * write, rather than the host deciding it for us.
  */
 export function AuthButtons({ viewer }: { viewer: Viewer }) {
+  if (!viewer.login && !viewer.signInAvailable) {
+    // No OAuth app configured. On an open board that is the intended setup, so
+    // say what the viewer can do rather than offering a button that cannot work.
+    return (
+      <span className="auth">
+        <span className={`role${viewer.canWrite ? " writer" : ""}`}>
+          {viewer.canWrite ? "open board" : "read only"}
+        </span>
+      </span>
+    );
+  }
+
   if (!viewer.login) {
     return (
       <form

@@ -24,7 +24,14 @@ A query-parameter scheme could not fix that, because the gate was *who is asking
 change was phrased*. A friend opening `?status=done` was refused exactly like a friend clicking a
 button.
 
-Here, the auth layer is ours:
+Here, the auth layer is ours, and it has two settings.
+
+**Open board** (`OPEN_BOARD=1`) — anyone with the link can write, no sign-in, no OAuth app to
+stand up. This is the least-ceremony way to get what the move was for: everyone on the project
+able to write. Deleting stays off in this mode, so the worst a passer-by can do is reversible, and
+agents still authenticate with their token so their writes stay attributable.
+
+**Signed-in board** (`OPEN_BOARD` unset) — the stricter setting:
 
 - **GitHub sign-in** (Auth.js), because everyone involved already has an account and it gives a
   stable handle.
@@ -78,6 +85,10 @@ Other scripts: `npm run build`, `npm run typecheck`, `npm run db:seed -- --reset
    | `AUTH_GITHUB_SECRET` | from the OAuth app |
    | `WRITER_LOGINS` | `kamurao,Romaium,sunnyisabot123` |
    | `WAVE_LEDGER_TOKEN` | the agents' bearer token (see below) |
+
+   To skip steps 3 and 4 entirely, set `OPEN_BOARD=1` and `WAVE_LEDGER_TOKEN` and nothing else.
+   Everyone with the link can then write, and you can add GitHub sign-in later without migrating
+   anything — the two modes share all their data.
 
    Generate an agent token with:
 

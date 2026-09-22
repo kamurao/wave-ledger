@@ -32,4 +32,10 @@ export type Viewer = {
   /** Canonical board handle this viewer acts as, when they map to one. */
   handle: string | null;
   canWrite: boolean;
+  /** Deleting needs a verified identity, so an open-board visitor cannot. */
+  canDelete: boolean;
+  /** True when the board lets anyone with the link write. */
+  openBoard: boolean;
+  /** False when no GitHub OAuth app is configured, so sign-in is hidden. */
+  signInAvailable: boolean;
 };

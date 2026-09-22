@@ -166,8 +166,9 @@ export function App({
 
       {!viewer.canWrite && plan.kind === "none" && (
         <div className="banner">
-          You are reading this board. Sign in with GitHub to edit it, or open a ticket and press
-          Copy link to send a change to someone who can apply it.
+          You are reading this board.{" "}
+          {viewer.signInAvailable ? "Sign in with GitHub to edit it, or open" : "Open"} a ticket and
+          press Copy link to send a change to someone who can apply it.
         </div>
       )}
 
@@ -208,6 +209,7 @@ export function App({
         open={editorOpen}
         ticket={editing}
         canWrite={viewer.canWrite}
+        canDelete={viewer.canDelete}
         me={me}
         onClose={() => setEditorOpen(false)}
         onChanged={refresh}

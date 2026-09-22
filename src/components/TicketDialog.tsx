@@ -44,6 +44,7 @@ export function TicketDialog({
   open,
   ticket,
   canWrite,
+  canDelete,
   me,
   onClose,
   onChanged,
@@ -51,6 +52,7 @@ export function TicketDialog({
   open: boolean;
   ticket: Ticket | null;
   canWrite: boolean;
+  canDelete: boolean;
   me: string;
   onClose: () => void;
   onChanged: () => void;
@@ -119,7 +121,7 @@ export function TicketDialog({
   }
 
   async function remove() {
-    if (!ticket || !canWrite || busy) return;
+    if (!ticket || !canDelete || busy) return;
     if (!armed) {
       setArmed(true);
       return;
@@ -296,7 +298,7 @@ export function TicketDialog({
             Copy link
           </button>
           <span className="spacer" />
-          {ticket && canWrite && (
+          {ticket && canDelete && (
             <button type="button" className="btn danger" onClick={remove} disabled={busy}>
               {armed ? "Click again to delete" : "Delete"}
             </button>

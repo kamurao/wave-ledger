@@ -68,7 +68,16 @@ export default async function Page({ searchParams }: { searchParams: Promise<Par
   const origin = await currentOrigin();
   const sp = await searchParams;
 
-  let viewer: Viewer = { login: null, name: null, image: null, handle: null, canWrite: false };
+  let viewer: Viewer = {
+    login: null,
+    name: null,
+    image: null,
+    handle: null,
+    canWrite: false,
+    canDelete: false,
+    openBoard: false,
+    signInAvailable: false,
+  };
   try {
     viewer = await resolveViewer();
   } catch {

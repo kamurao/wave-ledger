@@ -1,4 +1,4 @@
-import { actorLabel } from "@/lib/authz";
+import { actorLabel, canDelete } from "@/lib/authz";
 import { apiError, json, parseIfMatch, pickPatch, readJson, requireWriter, route } from "@/lib/api";
 import { deleteTicket, getEvents, getTicket, patchTicket, type Patch } from "@/lib/tickets";
 
@@ -43,6 +43,9 @@ async function PATCHHandler(req: Request, ctx: Ctx) {
 async function DELETEHandler(req: Request, ctx: Ctx) {
   const gate = await requireWriter(req);
   if ("response" in gate) return gate.response;
+  if (!canDelete(gate.actor)) {
+    return apiError(403, "deleting is off on an open board — move it to Complete instead");
+  }
 
   const { id } = await ctx.params;
   const ok = await deleteTicket(id);
