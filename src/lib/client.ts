@@ -59,7 +59,7 @@ export function patchTicket(
 ) {
   return send(`/api/tickets/${encodeURIComponent(id)}`, {
     method: "PATCH",
-    headers: { "if-match": String(version) },
+    headers: { "if-match-version": String(version) },
     body: JSON.stringify({ ...patch, by }),
   });
 }

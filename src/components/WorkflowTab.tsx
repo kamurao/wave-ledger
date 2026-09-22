@@ -23,7 +23,7 @@ Auth: Authorization: Bearer $WAVE_LEDGER_TOKEN`;
 curl -X PATCH ${origin}/api/tickets/t-fast-forward \\
   -H "Authorization: Bearer $WAVE_LEDGER_TOKEN" \\
   -H "Content-Type: application/json" \\
-  -H "If-Match: 3" \\
+  -H "If-Match-Version: 3" \\
   -d '{"status":"in_progress","assignee":"kamurao","branch":"feature/ken-changes"}'
 
 # open one that does not exist yet
@@ -37,7 +37,7 @@ curl -X POST ${origin}/api/tickets \\
 curl -X PATCH ${origin}/api/tickets/t-frost-tower \\
   -H "Authorization: Bearer $WAVE_LEDGER_TOKEN" \\
   -H "Content-Type: application/json" \\
-  -H "If-Match: 4" -d '{"status":"done"}'`;
+  -H "If-Match-Version: 4" -d '{"status":"done"}'`;
 
   function copy(key: string, text: string) {
     navigator.clipboard?.writeText(text).then(

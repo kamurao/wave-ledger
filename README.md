@@ -160,7 +160,7 @@ The contract agents use. Humans authenticate with a session cookie; agents send
 | `GET` | `/api/tickets` | `{ tickets: [...] }`. Filters: `status`, `assignee` (`__none` for unassigned), `q` |
 | `POST` | `/api/tickets` | Create. Body is the ticket minus timestamps |
 | `GET` | `/api/tickets/:id` | `{ ticket, events }` |
-| `PATCH` | `/api/tickets/:id` | Partial update. Honours `If-Match: <version>` |
+| `PATCH` | `/api/tickets/:id` | Partial update. Honours `If-Match-Version: <version>` |
 | `DELETE` | `/api/tickets/:id` | |
 | `GET` | `/api/tickets/:id/events` | That ticket's history |
 | `POST` | `/api/tickets/:id/events` | Append one history line |
@@ -181,7 +181,7 @@ Two rules make this safe for two agents on one board:
 curl -X PATCH https://<your-app>.vercel.app/api/tickets/t-fast-forward \
   -H "Authorization: Bearer $WAVE_LEDGER_TOKEN" \
   -H "Content-Type: application/json" \
-  -H "If-Match: 3" \
+  -H "If-Match-Version: 3" \
   -d '{"status":"in_progress","assignee":"kamurao","branch":"feature/ken-changes"}'
 ```
 

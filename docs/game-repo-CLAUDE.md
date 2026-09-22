@@ -53,7 +53,7 @@ runs in — a `.env` the shell sources, or the machine's user environment — as
 curl -X PATCH https://<your-app>.vercel.app/api/tickets/t-fast-forward \
   -H "Authorization: Bearer $WAVE_LEDGER_TOKEN" \
   -H "Content-Type: application/json" \
-  -H "If-Match: 3" \
+  -H "If-Match-Version: 3" \
   -d '{"status":"in_progress","assignee":"kamurao","branch":"feature/ken-changes"}'
 
 # 2. open one that does not exist yet
@@ -67,7 +67,7 @@ curl -X POST https://<your-app>.vercel.app/api/tickets \
 curl -X PATCH https://<your-app>.vercel.app/api/tickets/t-frost-tower \
   -H "Authorization: Bearer $WAVE_LEDGER_TOKEN" \
   -H "Content-Type: application/json" \
-  -H "If-Match: 4" \
+  -H "If-Match-Version: 4" \
   -d '{"status":"done"}'
 ```
 

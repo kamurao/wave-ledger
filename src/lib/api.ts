@@ -34,11 +34,31 @@ export async function requireWriter(
   };
 }
 
-export function parseIfMatch(req: Request): number | null {
-  const raw = req.headers.get("if-match");
-  if (!raw) return null;
-  const n = Number(raw.replace(/^W\//, "").replace(/"/g, "").trim());
-  return Number.isInteger(n) && n > 0 ? n : null;
+/**
+ * The version a caller is pinning its write to.
+ *
+ * Read from the `If-Match-Version` header, or `if_version` in the body, in that
+ * order.
+ *
+ * The standard `If-Match` header is still honoured last, but it is deliberately
+ * not the documented mechanism. A CDN or framework is entitled to evaluate
+ * `If-Match` against the response ETag itself and answer 412 — and on Vercel it
+ * does so *after* the row has been written, so the caller sees a failure for a
+ * change that actually landed and a retry double-applies it. A private header
+ * nothing else lays claim to cannot be intercepted that way.
+ */
+export function parseIfMatch(req: Request, body?: Record<string, unknown> | null): number | null {
+  const candidates = [
+    req.headers.get("if-match-version"),
+    body?.if_version === undefined || body.if_version === null ? null : String(body.if_version),
+    req.headers.get("if-match"),
+  ];
+  for (const raw of candidates) {
+    if (!raw) continue;
+    const n = Number(raw.replace(/^W\//, "").replace(/"/g, "").trim());
+    if (Number.isInteger(n) && n > 0) return n;
+  }
+  return null;
 }
 
 export async function readJson(req: Request): Promise<Record<string, unknown> | null> {

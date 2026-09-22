@@ -24,7 +24,7 @@ async function PATCHHandler(req: Request, ctx: Ctx) {
   if (!body) return apiError(400, "expected a JSON object body");
 
   const result = await patchTicket(id, pickPatch(body) as Patch, {
-    ifMatch: parseIfMatch(req),
+    ifMatch: parseIfMatch(req, body),
     actor: actorLabel(gate.actor, typeof body.by === "string" ? body.by : null),
     note: typeof body.note === "string" && body.note.trim() ? body.note.trim() : null,
   });
