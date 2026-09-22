@@ -11,8 +11,8 @@
     "lint": "next lint",
     "db:push": "drizzle-kit push",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/migrate.ts",
-    "db:seed": "tsx --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/seed.ts"
+    "db:migrate": "node --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/migrate.ts",
+    "db:seed": "node --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/seed.ts"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.3",
@@ -30,10 +30,9 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "drizzle-kit": "^0.31.11",
-    "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   },
   "engines": {
-    "node": ">=20.9"
+    "node": ">=22.18"
   }
 }

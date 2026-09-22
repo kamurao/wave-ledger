@@ -56,6 +56,9 @@ npm run dev
 You need a Postgres connection string in `DATABASE_URL`. Neon's free tier is plenty; so is any
 other Postgres. The app never uses provider-specific features.
 
+Node 22.18 or newer, because the migrate and seed scripts are TypeScript run directly by Node's
+own type stripping — there is no build step or loader in front of them.
+
 Other scripts: `npm run build`, `npm run typecheck`, `npm run db:seed -- --reset` (wipes first).
 
 ---
