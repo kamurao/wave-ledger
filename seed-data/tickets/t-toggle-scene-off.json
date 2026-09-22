@@ -1,0 +1,28 @@
+{
+  "assignee": null,
+  "branch": "",
+  "created_at": "2026-09-21T12:00:00.000Z",
+  "history": [
+    {
+      "at": "2026-09-21T12:00:00.000Z",
+      "by": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "at": "2026-09-21T10:15:00.291Z",
+      "by": "@kamurao",
+      "text": "moved to In progress"
+    },
+    {
+      "at": "2026-09-21T10:17:07.747Z",
+      "by": "@kamurao",
+      "text": "moved to Complete"
+    }
+  ],
+  "kind": "feature",
+  "notes": "",
+  "section": "KEN",
+  "status": "done",
+  "title": "Toggle scene off",
+  "updated_at": "2026-09-21T10:17:07.747Z"
+}

@@ -1,0 +1,28 @@
+{
+  "assignee": "kamurao",
+  "branch": "feature/ken-changes",
+  "created_at": "2026-09-21T14:01:06.837Z",
+  "history": [
+    {
+      "at": "2026-09-21T14:01:06.837Z",
+      "by": "@kamurao",
+      "text": "created"
+    },
+    {
+      "at": "2026-09-22T00:15:00.000Z",
+      "by": "claude",
+      "text": "picked up on feature/ken-changes"
+    },
+    {
+      "at": "2026-09-22T00:30:00.000Z",
+      "by": "claude",
+      "text": "committed and pushed as c47ae07 (hand packs instead of shrinking, headline rule row, MaxHandSize 10, PlayedCardFlourish, 'Single target' row dropped). Test suite not re-run at commit time."
+    }
+  ],
+  "kind": "feature",
+  "notes": "Scope: Slay-the-Spire hand (no shrinking, overlap + full hover reveal), max hand 10, played spells/skills fly to centre then away, drop 'Single target' in favour of AOE-only labelling, plus card-face hierarchy fixes (bigger keyword icon, hero effect row, name truncation, footer clipping).",
+  "section": "Unsorted",
+  "status": "done",
+  "title": "Card UI Rework to include Keywords",
+  "updated_at": "2026-09-22T00:00:00.000Z"
+}

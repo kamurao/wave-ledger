@@ -1,0 +1,18 @@
+{
+  "assignee": null,
+  "branch": "",
+  "created_at": "2026-09-21T12:00:00.000Z",
+  "history": [
+    {
+      "at": "2026-09-21T12:00:00.000Z",
+      "by": "claude",
+      "text": "imported from the team list"
+    }
+  ],
+  "kind": "feature",
+  "notes": "",
+  "section": "Unsorted",
+  "status": "todo",
+  "title": "Balance gaining gems so the hero can't just tank waves to mine a lot of gold",
+  "updated_at": "2026-09-21T12:00:00.000Z"
+}

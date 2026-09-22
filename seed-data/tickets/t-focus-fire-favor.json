@@ -1,0 +1,18 @@
+{
+  "assignee": null,
+  "branch": "",
+  "created_at": "2026-09-21T12:00:00.000Z",
+  "history": [
+    {
+      "at": "2026-09-21T12:00:00.000Z",
+      "by": "claude",
+      "text": "imported from the team list"
+    }
+  ],
+  "kind": "question",
+  "notes": "",
+  "section": "Unsorted",
+  "status": "todo",
+  "title": "Focus fire: can certain towers favor certain enemies?",
+  "updated_at": "2026-09-21T12:00:00.000Z"
+}

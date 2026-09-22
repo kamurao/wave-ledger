@@ -1,0 +1,18 @@
+{
+  "assignee": null,
+  "branch": "",
+  "created_at": "2026-09-21T12:00:00.000Z",
+  "history": [
+    {
+      "at": "2026-09-21T12:00:00.000Z",
+      "by": "claude",
+      "text": "imported from the team list"
+    }
+  ],
+  "kind": "question",
+  "notes": "",
+  "section": "Unsorted",
+  "status": "todo",
+  "title": "How do we want to deal with the slow paced gameplay?",
+  "updated_at": "2026-09-21T12:00:00.000Z"
+}

@@ -1,0 +1,39 @@
+{
+  "name": "wave-ledger",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Kanban board for the Slay the Tower project where Claude Code agents are first-class writers.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "next lint",
+    "db:push": "drizzle-kit push",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/migrate.ts",
+    "db:seed": "tsx --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/seed.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.3",
+    "next": "16.3.5",
+    "next-auth": "^5.0.0-beta.32",
+    "pg": "^8.23.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "^0.0.1",
+    "swr": "^2.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "@types/pg": "^8.15.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "drizzle-kit": "^0.31.11",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}

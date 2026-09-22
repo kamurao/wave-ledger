@@ -1,0 +1,23 @@
+{
+  "assignee": "kamurao",
+  "branch": "feature/ken-changes",
+  "created_at": "2026-09-21T12:00:00.000Z",
+  "history": [
+    {
+      "at": "2026-09-21T12:00:00.000Z",
+      "by": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "at": "2026-09-21T13:00:00.000Z",
+      "by": "claude",
+      "text": "moved to Complete (Skip button found in code)"
+    }
+  ],
+  "kind": "feature",
+  "notes": "Skip button exists on DraftView and DiscoverView.",
+  "section": "Unsorted",
+  "status": "done",
+  "title": "Add skip card rewards",
+  "updated_at": "2026-09-21T13:00:00.000Z"
+}

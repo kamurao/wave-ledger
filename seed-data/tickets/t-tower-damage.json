@@ -1,0 +1,23 @@
+{
+  "assignee": "kamurao",
+  "branch": "feature/ken-changes",
+  "created_at": "2026-09-21T12:00:00.000Z",
+  "history": [
+    {
+      "at": "2026-09-21T12:00:00.000Z",
+      "by": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "at": "2026-09-21T13:00:00.000Z",
+      "by": "claude",
+      "text": "moved to Complete (found in code on feature/ken-changes)"
+    }
+  ],
+  "kind": "feature",
+  "notes": "Enemies flagged CanAttackTowers damage towers (LaneCombatSystem); TowerDamageFire shows damage; gems repair.",
+  "section": "KEN",
+  "status": "done",
+  "title": "Tower damage",
+  "updated_at": "2026-09-21T13:00:00.000Z"
+}

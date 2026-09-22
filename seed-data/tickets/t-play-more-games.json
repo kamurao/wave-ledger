@@ -1,0 +1,18 @@
+{
+  "assignee": null,
+  "branch": "",
+  "created_at": "2026-09-21T12:00:00.000Z",
+  "history": [
+    {
+      "at": "2026-09-21T12:00:00.000Z",
+      "by": "claude",
+      "text": "imported from the team list"
+    }
+  ],
+  "kind": "feature",
+  "notes": "Research task: play other deckbuilders and tower defense games for reference.",
+  "section": "Unsorted",
+  "status": "todo",
+  "title": "We should play more games, we keep referring to sts2",
+  "updated_at": "2026-09-21T12:00:00.000Z"
+}
