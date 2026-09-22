@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import useSWR from "swr";
 import { DEFAULT_HANDLE, PEOPLE, type Status } from "@/lib/constants";
 import { ApiError, fetcher, patchTicket } from "@/lib/client";
@@ -66,24 +66,24 @@ export function App({
     }
   };
 
+  // The stream is the primary signal; the interval is a safety net behind it,
+  // and the documented fallback when the stream is unavailable. Going through a
+  // ref lets the subscription be declared before the fetch it refreshes.
+  const refreshRef = useRef<() => void>(() => {});
+  const live = useRealtime(() => refreshRef.current());
+
   const { data, mutate, error: loadError } = useSWR<{ tickets: Ticket[] }>("/api/tickets", fetcher, {
     fallbackData: { tickets: initialTickets },
     keepPreviousData: true,
+    refreshInterval: live === "live" ? 30_000 : 10_000,
   });
 
   const refresh = useCallback(() => {
     void mutate();
   }, [mutate]);
+  refreshRef.current = refresh;
 
-  const live = useRealtime(refresh);
   const tickets = data?.tickets ?? initialTickets;
-
-  // A slow safety poll behind the stream, and the documented fallback when the
-  // stream is unavailable.
-  useSWR(live === "live" ? null : "/api/tickets", fetcher, {
-    refreshInterval: 10_000,
-    onSuccess: (d: { tickets: Ticket[] }) => void mutate(d, { revalidate: false }),
-  });
 
   const dialogOpen = editorOpen || bulkOpen;
   const now = useMinuteTick(dialogOpen);
