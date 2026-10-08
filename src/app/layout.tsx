@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Wave Ledger",
   description:
-    "The Slay the Tower work queue: a Kanban board that Claude Code sessions read and write alongside the people on the project.",
+    "The Slay the Tower design board: epics, milestones and a work queue that Claude Code sessions read and write alongside the people on the project.",
 };
 
 export const viewport: Viewport = {

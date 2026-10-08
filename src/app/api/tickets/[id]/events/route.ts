@@ -1,6 +1,6 @@
 import { actorLabel } from "@/lib/authz";
 import { apiError, json, readJson, requireWriter, route } from "@/lib/api";
-import { appendEvent, getEvents, getTicket } from "@/lib/tickets";
+import { appendEvent, getEvents, getTicket, resolveTicketId } from "@/lib/tickets";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 type Ctx = { params: Promise<{ id: string }> };
 
 async function GETHandler(_req: Request, ctx: Ctx) {
-  const { id } = await ctx.params;
+  const id = await resolveTicketId((await ctx.params).id);
   if (!(await getTicket(id))) return apiError(404, "no such ticket");
   return json({ events: await getEvents(id) });
 }
@@ -21,7 +21,7 @@ async function POSTHandler(req: Request, ctx: Ctx) {
   const gate = await requireWriter(req);
   if ("response" in gate) return gate.response;
 
-  const { id } = await ctx.params;
+  const id = await resolveTicketId((await ctx.params).id);
   if (!(await getTicket(id))) return apiError(404, "no such ticket");
 
   const body = await readJson(req);

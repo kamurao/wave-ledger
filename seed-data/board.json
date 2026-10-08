@@ -1,0 +1,535 @@
+{
+  "milestones": [
+    {
+      "id": "m-concept",
+      "name": "Concept & Pillars",
+      "status": "active",
+      "goal": "The fantasy, the pillars and the core loop are written down and agreed by all three of us. We know what game we are making."
+    },
+    {
+      "id": "m-prototype",
+      "name": "Playable Prototype",
+      "status": "upcoming",
+      "goal": "The core loop is playable end to end on one level, and a stranger can tell us whether it is fun."
+    },
+    {
+      "id": "m-vertical-slice",
+      "name": "Vertical Slice",
+      "status": "upcoming",
+      "goal": "One act at ship quality: art, audio, UX, onboarding and balance. The bar every later act is held to."
+    },
+    {
+      "id": "m-alpha",
+      "name": "Alpha",
+      "status": "upcoming",
+      "goal": "Content complete: every act, tower, enemy and progression system is in, even if rough."
+    },
+    {
+      "id": "m-beta",
+      "name": "Beta",
+      "status": "upcoming",
+      "goal": "Balanced, polished and bug-fixed. Only release blockers remain."
+    },
+    {
+      "id": "m-release",
+      "name": "Release",
+      "status": "upcoming",
+      "goal": "Ship it."
+    }
+  ],
+  "epics": [
+    {
+      "id": "e-vision",
+      "name": "Vision & Pillars",
+      "color": "e1",
+      "summary": "What the game is, who it is for, and the few things we refuse to compromise on."
+    },
+    {
+      "id": "e-core-loop",
+      "name": "Core Loop & Pacing",
+      "color": "e2",
+      "summary": "Moment to moment, wave to wave, level to level. Session length, tempo, win and lose."
+    },
+    {
+      "id": "e-towers",
+      "name": "Towers & Upgrades",
+      "color": "e3",
+      "summary": "Tower roles, upgrade paths, branches and champions, targeting."
+    },
+    {
+      "id": "e-hero",
+      "name": "Hero",
+      "color": "e4",
+      "summary": "Whether and how the player is present on the field: abilities, aggro, progression."
+    },
+    {
+      "id": "e-enemies",
+      "name": "Enemies & Bosses",
+      "color": "e5",
+      "summary": "Enemy roster, damage types and resistances, elite and boss encounters."
+    },
+    {
+      "id": "e-cards",
+      "name": "Cards & Keywords",
+      "color": "e6",
+      "summary": "Keywords, synergies and the card system. The card engine's future is itself an open question."
+    },
+    {
+      "id": "e-economy",
+      "name": "Economy & Balance",
+      "color": "e7",
+      "summary": "Income, sinks, pacing curve, and the numbers that make it fair."
+    },
+    {
+      "id": "e-progression",
+      "name": "Run Structure & Progression",
+      "color": "e8",
+      "summary": "Acts, levels, unlocks, relics, skill trees and the meta layer."
+    },
+    {
+      "id": "e-levels",
+      "name": "Levels & Encounters",
+      "color": "e1",
+      "summary": "Map design, lanes, gates and key mechanics, encounter variety."
+    },
+    {
+      "id": "e-narrative",
+      "name": "Narrative & World",
+      "color": "e2",
+      "summary": "The story that ties the ideas together, characters, tone."
+    },
+    {
+      "id": "e-ux",
+      "name": "UI/UX & Game Feel",
+      "color": "e3",
+      "summary": "HUD, onboarding, readability, juice, camera."
+    },
+    {
+      "id": "e-art-audio",
+      "name": "Art & Audio",
+      "color": "e4",
+      "summary": "Art direction, assets, music and sound."
+    },
+    {
+      "id": "e-tech",
+      "name": "Tech, Tools & Pipeline",
+      "color": "e5",
+      "summary": "Engine work, tooling, CI and the simulation bot."
+    },
+    {
+      "id": "e-playtest",
+      "name": "Playtesting & Research",
+      "color": "e6",
+      "summary": "Reference games, playtest protocol, and what we learn from watching people play."
+    }
+  ],
+  "tickets": [
+    {
+      "id": "t-card-engine-future",
+      "title": "Decide: does the **card engine** stay, go, or become something else?",
+      "kind": "question",
+      "status": "todo",
+      "epic": "e-cards",
+      "milestone": "m-concept",
+      "priority": "p0",
+      "estimate": "M",
+      "labels": [
+        "blocks-design"
+      ],
+      "notes": "The in-flight RTS loop work (branch feature/ken-rts-loop) strips the card engine: spells become Hero abilities, monster cards become a Barracks tower. Most of Cards & Keywords, and part of Progression, depends on this answer. Settle it before writing more card or reward design.",
+      "criteria": "- [ ] Options written down with what each costs us\n- [ ] Playtested both loops back to back\n- [ ] Decision recorded here, with the reason"
+    },
+    {
+      "id": "t-design-pillars",
+      "title": "Write the **design pillars** (3 to 5) and the elevator pitch",
+      "kind": "design",
+      "status": "todo",
+      "epic": "e-vision",
+      "milestone": "m-concept",
+      "priority": "p0",
+      "estimate": "S",
+      "notes": "A pillar is a sentence we can use to say no. Each one should name something we would cut to protect it.",
+      "criteria": "- [ ] 3 to 5 pillars, one sentence each\n- [ ] Each pillar names what we would cut to protect it\n- [ ] Elevator pitch in two sentences\n- [ ] All three of us agree"
+    },
+    {
+      "id": "t-core-loop-diagram",
+      "title": "Draw the **core loop** on one page: moment, wave, level, run",
+      "kind": "design",
+      "status": "todo",
+      "epic": "e-core-loop",
+      "milestone": "m-concept",
+      "priority": "p0",
+      "estimate": "M",
+      "notes": "One diagram per time scale. Mark where the player makes a meaningful decision, and where they are only waiting.",
+      "criteria": "- [ ] Four time scales drawn: moment, wave, level, run\n- [ ] Every decision point marked\n- [ ] Every waiting point marked\n- [ ] Reviewed by all three of us"
+    },
+    {
+      "id": "t-player-fantasy",
+      "title": "Define the **player fantasy** and target audience",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-vision",
+      "milestone": "m-concept",
+      "priority": "p1",
+      "estimate": "S",
+      "notes": "Who is this for, what do they want to feel, and which games are they playing now."
+    },
+    {
+      "id": "t-win-lose",
+      "title": "Define **win and lose** conditions at wave, level and run scale",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-core-loop",
+      "milestone": "m-concept",
+      "priority": "p1",
+      "estimate": "S",
+      "depends_on": [
+        "t-core-loop-diagram"
+      ]
+    },
+    {
+      "id": "t-session-length",
+      "title": "Set the target **session length** and run length",
+      "kind": "question",
+      "status": "backlog",
+      "epic": "e-core-loop",
+      "milestone": "m-concept",
+      "priority": "p1",
+      "estimate": "S",
+      "notes": "Closely tied to the pacing complaint. Pick numbers (minutes per level, levels per act, acts per run) and design backwards from them."
+    },
+    {
+      "id": "t-gdd-index",
+      "title": "Consolidate `docs/` into one **GDD index**: what is current, what is superseded",
+      "kind": "task",
+      "status": "backlog",
+      "epic": "e-vision",
+      "milestone": "m-concept",
+      "priority": "p2",
+      "estimate": "M",
+      "notes": "The game repo's docs/ already holds ECONOMY_AND_UI_SPEC, SCALING_AND_SYNERGY, BETWEEN_WAVES_DESIGN, HERO_ECONOMY_DESIGN_IDEAS and more. Some predate the RTS pivot. One index that says which are live stops us designing from stale pages."
+    },
+    {
+      "id": "t-want-a-hero",
+      "title": "Do we want a **hero**?",
+      "kind": "question",
+      "status": "todo",
+      "epic": "e-hero",
+      "milestone": "m-concept",
+      "priority": "p1",
+      "estimate": "S",
+      "notes": "Carried over from the previous board (`t-want-a-hero`). The Hero is already built and growing; this is the question of whether it earns its place in the pillars."
+    },
+    {
+      "id": "t-slow-pacing",
+      "title": "How do we want to deal with the slow-paced gameplay?",
+      "kind": "question",
+      "status": "todo",
+      "epic": "e-core-loop",
+      "milestone": "m-concept",
+      "priority": "p1",
+      "estimate": "M",
+      "notes": "Carried over from the previous board (`t-slow-pacing`)."
+    },
+    {
+      "id": "t-towers-middle",
+      "title": "Towers in the middle?",
+      "kind": "question",
+      "status": "backlog",
+      "epic": "e-levels",
+      "milestone": "m-prototype",
+      "priority": "p2",
+      "estimate": "S",
+      "notes": "Carried over from the previous board (`t-towers-middle`)."
+    },
+    {
+      "id": "t-act-progression",
+      "title": "Figure out how to progress through acts, and make it faster paced",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-progression",
+      "milestone": "m-prototype",
+      "priority": "p2",
+      "estimate": "L",
+      "notes": "Carried over from the previous board (`t-act-progression`)."
+    },
+    {
+      "id": "t-card-end-of-wave",
+      "title": "Card from your deck at the end of your wave, not at the start",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-cards",
+      "milestone": "m-prototype",
+      "priority": "p3",
+      "estimate": "S",
+      "depends_on": [
+        "t-card-engine-future"
+      ],
+      "notes": "Carried over from the previous board (`t-card-end-of-wave`)."
+    },
+    {
+      "id": "t-deck-creation",
+      "title": "How do we let players create the deck?",
+      "kind": "question",
+      "status": "backlog",
+      "epic": "e-cards",
+      "milestone": "m-prototype",
+      "priority": "p2",
+      "estimate": "M",
+      "depends_on": [
+        "t-card-engine-future"
+      ],
+      "notes": "Carried over from the previous board (`t-deck-creation`)."
+    },
+    {
+      "id": "t-base-chip-damage",
+      "title": "Does our base take chip damage? Does it heal after every level?",
+      "kind": "question",
+      "status": "backlog",
+      "epic": "e-core-loop",
+      "milestone": "m-prototype",
+      "priority": "p2",
+      "estimate": "S",
+      "notes": "Carried over from the previous board (`t-base-chip-damage`)."
+    },
+    {
+      "id": "t-balancing-engine-cracks",
+      "title": "Update the balancing engine to reveal cracks?",
+      "kind": "question",
+      "status": "backlog",
+      "epic": "e-economy",
+      "milestone": "m-prototype",
+      "priority": "p3",
+      "estimate": "S",
+      "notes": "Carried over from the previous board (`t-balancing-engine-cracks`)."
+    },
+    {
+      "id": "t-gem-balance",
+      "title": "Balance gem income so the Hero cannot tank waves to mine a lot of gold",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-economy",
+      "milestone": "m-prototype",
+      "priority": "p2",
+      "estimate": "M",
+      "notes": "Carried over from the previous board (`t-gem-balance`)."
+    },
+    {
+      "id": "t-key-gate",
+      "title": "KEY MECHANICS: **Gate**",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-levels",
+      "milestone": "m-prototype",
+      "priority": "p2",
+      "estimate": "M",
+      "notes": "Carried over from the previous board (`t-key-gate`). Needs a real definition before it can be built."
+    },
+    {
+      "id": "t-key-levels",
+      "title": "KEY MECHANICS: **Levels**",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-progression",
+      "milestone": "m-prototype",
+      "priority": "p2",
+      "estimate": "M",
+      "notes": "Carried over from the previous board (`t-key-levels`). Needs a real definition before it can be built."
+    },
+    {
+      "id": "t-keyword-mechanics",
+      "title": "**Keyword** mechanics: bold the keywords (**slow** etc.)",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-cards",
+      "milestone": "m-prototype",
+      "priority": "p2",
+      "estimate": "M",
+      "notes": "Carried over from the previous board (`t-keyword-mechanics`)."
+    },
+    {
+      "id": "t-max-level-skill-tree",
+      "title": "If we max-level a tower it goes into a different **skill tree**",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-towers",
+      "milestone": "m-vertical-slice",
+      "priority": "p3",
+      "estimate": "L",
+      "notes": "Carried over from the previous board (`t-max-level-skill-tree`)."
+    },
+    {
+      "id": "t-overarching-story",
+      "title": "Come up with an **overarching story** to get our ideas together",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-narrative",
+      "milestone": "m-concept",
+      "priority": "p2",
+      "estimate": "L",
+      "notes": "Carried over from the previous board (`t-overarching-story`)."
+    },
+    {
+      "id": "t-play-more-games",
+      "title": "Play more games: we keep referring to **STS2**",
+      "kind": "task",
+      "status": "todo",
+      "epic": "e-playtest",
+      "milestone": "m-concept",
+      "priority": "p2",
+      "estimate": "M",
+      "notes": "Carried over from the previous board (`t-play-more-games`). Research task: play other deckbuilders and tower defense games for reference. Write down, per game, one thing we take and one thing we refuse.",
+      "criteria": "- [ ] Shortlist of 5 or more games, agreed\n- [ ] One-paragraph teardown per game\n- [ ] Take / refuse list pinned to the Vision epic"
+    },
+    {
+      "id": "t-focus-fire-favor",
+      "title": "Focus fire: can certain towers **favor** certain enemies?",
+      "kind": "question",
+      "status": "backlog",
+      "epic": "e-towers",
+      "milestone": "m-prototype",
+      "priority": "p2",
+      "estimate": "S",
+      "notes": "Carried over from the previous board (`t-focus-fire-favor`)."
+    },
+    {
+      "id": "t-elemental-minions",
+      "title": "**Elemental** minions?",
+      "kind": "question",
+      "status": "backlog",
+      "epic": "e-enemies",
+      "milestone": "m-vertical-slice",
+      "priority": "p3",
+      "estimate": "S",
+      "notes": "Carried over from the previous board (`t-elemental-minions`)."
+    },
+    {
+      "id": "t-tower-roles",
+      "title": "Define **tower roles** and a counter matrix against enemy types",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-towers",
+      "milestone": "m-prototype",
+      "priority": "p1",
+      "estimate": "M",
+      "notes": "A tower earns its slot by being the right answer to something. Write the matrix first, then check every tower and every enemy has a row."
+    },
+    {
+      "id": "t-keyword-glossary",
+      "title": "Write the **keyword glossary** as the single source of truth",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-cards",
+      "milestone": "m-prototype",
+      "priority": "p1",
+      "estimate": "S",
+      "notes": "One line per keyword: what it does, what it stacks with, what it counters. Tooltips and card text pull from it."
+    },
+    {
+      "id": "t-economy-model",
+      "title": "Document the **economy model**: sources, sinks, target pacing curve",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-economy",
+      "milestone": "m-prototype",
+      "priority": "p1",
+      "estimate": "M",
+      "depends_on": [
+        "t-core-loop-diagram"
+      ]
+    },
+    {
+      "id": "t-balance-targets",
+      "title": "Set the **balance targets** the sim bot enforces",
+      "kind": "task",
+      "status": "backlog",
+      "epic": "e-tech",
+      "milestone": "m-prototype",
+      "priority": "p2",
+      "estimate": "S",
+      "notes": "CI currently fails if the production bot's win rate falls outside 90 to 98 percent. Decide whether that is the target we want, and what else (pacing, resource curve, boss time-to-kill) the bot should gate."
+    },
+    {
+      "id": "t-vertical-slice-scope",
+      "title": "Scope the **vertical slice**",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-vision",
+      "milestone": "m-prototype",
+      "priority": "p1",
+      "estimate": "M",
+      "depends_on": [
+        "t-design-pillars"
+      ],
+      "notes": "Which act, which towers, which enemies, which boss. Small enough to finish, representative enough to judge the whole game by."
+    },
+    {
+      "id": "t-playtest-protocol",
+      "title": "Write the **playtest protocol**: build to test, questions, how we record results",
+      "kind": "task",
+      "status": "backlog",
+      "epic": "e-playtest",
+      "milestone": "m-prototype",
+      "priority": "p1",
+      "estimate": "S",
+      "criteria": "- [ ] A one-page script\n- [ ] A fixed set of questions\n- [ ] Somewhere results get written down, tagged by build"
+    },
+    {
+      "id": "t-playtest-round-1",
+      "title": "Run **playtest round 1** with outside players",
+      "kind": "task",
+      "status": "backlog",
+      "epic": "e-playtest",
+      "milestone": "m-prototype",
+      "priority": "p1",
+      "estimate": "L",
+      "depends_on": [
+        "t-playtest-protocol"
+      ],
+      "notes": "Five players who have not seen the game. Watch, do not explain."
+    },
+    {
+      "id": "t-difficulty-curve",
+      "title": "Chart the **difficulty curve** across waves, levels and acts",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-progression",
+      "milestone": "m-vertical-slice",
+      "priority": "p2",
+      "estimate": "M",
+      "depends_on": [
+        "t-economy-model"
+      ]
+    },
+    {
+      "id": "t-first-five-minutes",
+      "title": "Design the **first five minutes**: tutorial and onboarding",
+      "kind": "design",
+      "status": "backlog",
+      "epic": "e-ux",
+      "milestone": "m-vertical-slice",
+      "priority": "p2",
+      "estimate": "M"
+    },
+    {
+      "id": "t-art-direction",
+      "title": "Lock the **art direction** and style guide",
+      "kind": "art",
+      "status": "backlog",
+      "epic": "e-art-audio",
+      "milestone": "m-vertical-slice",
+      "priority": "p2",
+      "estimate": "L"
+    },
+    {
+      "id": "t-audio-direction",
+      "title": "Set the **audio direction**: music, SFX palette, voice",
+      "kind": "audio",
+      "status": "backlog",
+      "epic": "e-art-audio",
+      "milestone": "m-vertical-slice",
+      "priority": "p3",
+      "estimate": "M"
+    }
+  ]
+}

@@ -1,29 +1,36 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { SECTIONS } from "@/lib/constants";
+import { KINDS, STATUSES } from "@/lib/constants";
 import { createTicket, type ApiError } from "@/lib/client";
+import type { Epic, Milestone } from "@/lib/types";
 
 /**
- * Bulk create, one ticket per line. A line ending in `?` becomes a question,
- * everything else a feature; all land in To do. This is how the original team
- * list was imported, and it is still the fastest way to dump a meeting's output
- * onto the board.
+ * Bulk create, one ticket per line. With the type left on Auto, a line ending in
+ * `?` becomes a question and everything else a feature. Still the fastest way
+ * to dump a meeting's output onto the board.
  */
 export function BulkDialog({
   open,
   me,
+  epics,
+  milestones,
   onClose,
   onChanged,
 }: {
   open: boolean;
   me: string;
+  epics: Epic[];
+  milestones: Milestone[];
   onClose: () => void;
   onChanged: () => void;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const [text, setText] = useState("");
-  const [section, setSection] = useState("Unsorted");
+  const [kind, setKind] = useState("auto");
+  const [status, setStatus] = useState("backlog");
+  const [epic, setEpic] = useState("");
+  const [milestone, setMilestone] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -57,9 +64,10 @@ export function BulkDialog({
         await createTicket(
           {
             title: line,
-            kind: /\?$/.test(line) ? "question" : "feature",
-            status: "todo",
-            section,
+            kind: kind === "auto" ? (/\?$/.test(line) ? "question" : "feature") : kind,
+            status,
+            epic_id: epic || null,
+            milestone_id: milestone || null,
           },
           me,
         );
@@ -81,28 +89,67 @@ export function BulkDialog({
       <form onSubmit={submit}>
         <h3>Paste a list</h3>
         <p className="hint">
-          One ticket per line. Lines ending in a question mark become questions; everything else
-          becomes a feature. New tickets land in To do.
+          One ticket per line. With Type on Auto, lines ending in a question mark become questions
+          and everything else becomes a feature.
         </p>
         <label className="f" htmlFor="bulkText">
           Tickets
           <textarea
             id="bulkText"
-            style={{ minHeight: 180 }}
+            style={{ minHeight: 160 }}
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
         </label>
-        <label className="f" htmlFor="bulkSection">
-          List
-          <select id="bulkSection" value={section} onChange={(e) => setSection(e.target.value)}>
-            {SECTIONS.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-        </label>
+        <div className="row2">
+          <label className="f" htmlFor="bulkKind">
+            Type
+            <select id="bulkKind" value={kind} onChange={(e) => setKind(e.target.value)}>
+              <option value="auto">Auto</option>
+              {KINDS.map((k) => (
+                <option key={k.id} value={k.id}>
+                  {k.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="f" htmlFor="bulkStatus">
+            Column
+            <select id="bulkStatus" value={status} onChange={(e) => setStatus(e.target.value)}>
+              {STATUSES.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="row2">
+          <label className="f" htmlFor="bulkEpic">
+            Epic
+            <select id="bulkEpic" value={epic} onChange={(e) => setEpic(e.target.value)}>
+              <option value="">No epic</option>
+              {epics
+                .filter((e) => e.status !== "archived")
+                .map((e) => (
+                  <option key={e.id} value={e.id}>
+                    {e.name}
+                  </option>
+                ))}
+            </select>
+          </label>
+          <label className="f" htmlFor="bulkMilestone">
+            Milestone
+            <select id="bulkMilestone" value={milestone} onChange={(e) => setMilestone(e.target.value)}>
+              <option value="">Unscheduled</option>
+              {milestones.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
         {error && <p className="note err">{error}</p>}
         <div className="actions">
           <button type="submit" className="btn primary" disabled={busy}>

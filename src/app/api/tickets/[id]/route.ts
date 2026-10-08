@@ -1,6 +1,6 @@
 import { actorLabel, canDelete } from "@/lib/authz";
 import { apiError, json, parseIfMatch, pickPatch, readJson, requireWriter, route } from "@/lib/api";
-import { deleteTicket, getEvents, getTicket, patchTicket, type Patch } from "@/lib/tickets";
+import { deleteTicket, getEvents, getTicket, patchTicket, resolveTicketId } from "@/lib/tickets";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 type Ctx = { params: Promise<{ id: string }> };
 
 async function GETHandler(_req: Request, ctx: Ctx) {
-  const { id } = await ctx.params;
+  const id = await resolveTicketId((await ctx.params).id);
   const ticket = await getTicket(id);
   if (!ticket) return apiError(404, "no such ticket");
   const events = await getEvents(id);
@@ -19,11 +19,11 @@ async function PATCHHandler(req: Request, ctx: Ctx) {
   const gate = await requireWriter(req);
   if ("response" in gate) return gate.response;
 
-  const { id } = await ctx.params;
+  const id = await resolveTicketId((await ctx.params).id);
   const body = await readJson(req);
   if (!body) return apiError(400, "expected a JSON object body");
 
-  const result = await patchTicket(id, pickPatch(body) as Patch, {
+  const result = await patchTicket(id, pickPatch(body), {
     ifMatch: parseIfMatch(req, body),
     actor: actorLabel(gate.actor, typeof body.by === "string" ? body.by : null),
     note: typeof body.note === "string" && body.note.trim() ? body.note.trim() : null,
@@ -47,7 +47,7 @@ async function DELETEHandler(req: Request, ctx: Ctx) {
     return apiError(403, "deleting is off on an open board — move it to Complete instead");
   }
 
-  const { id } = await ctx.params;
+  const id = await resolveTicketId((await ctx.params).id);
   const ok = await deleteTicket(id);
   if (!ok) return apiError(404, "no such ticket");
   return json({ deleted: id });

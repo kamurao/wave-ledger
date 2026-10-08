@@ -2,7 +2,7 @@
   "name": "wave-ledger",
   "version": "1.0.0",
   "private": true,
-  "description": "A Kanban board for the Slay the Tower project where Claude Code agents are first-class writers.",
+  "description": "A game-design Kanban board for the Slay the Tower project where Claude Code agents are first-class writers.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,7 +12,9 @@
     "db:push": "drizzle-kit push",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "node --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/migrate.ts",
-    "db:seed": "node --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/seed.ts"
+    "db:seed": "node --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/seed.ts",
+    "db:export": "node --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/export.ts",
+    "db:clear-tickets": "node --env-file-if-exists=.env.local --env-file-if-exists=.env scripts/clear-tickets.ts"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.3",

@@ -1,4 +1,12 @@
-import { canonicalHandle, isKind, isSection, isStatus, SECTIONS, STATUSES } from "./constants";
+import {
+  canonicalHandle,
+  isEstimate,
+  isKind,
+  isPriority,
+  isStatus,
+  KINDS,
+  STATUSES,
+} from "./constants";
 import type { Ticket } from "./types";
 
 /**
@@ -15,7 +23,10 @@ export const LINK_FIELDS = [
   "status",
   "kind",
   "assignee",
-  "section",
+  "epic",
+  "milestone",
+  "priority",
+  "estimate",
   "branch",
   "notes",
 ] as const;
@@ -24,6 +35,20 @@ export type LinkField = (typeof LINK_FIELDS)[number];
 
 /** Params that make a link an update link rather than a plain visit. */
 export const TARGET_PARAMS = ["add", "id", "t"] as const;
+
+/** The ticket property a link field reads from and writes to. */
+export const LINK_TO_TICKET = {
+  title: "title",
+  status: "status",
+  kind: "kind",
+  assignee: "assignee",
+  epic: "epic_id",
+  milestone: "milestone_id",
+  priority: "priority",
+  estimate: "estimate",
+  branch: "branch",
+  notes: "notes",
+} as const satisfies Record<(typeof LINK_FIELDS)[number], keyof Ticket>;
 
 export type FieldChange = { field: LinkField; from: string; to: string };
 
@@ -49,6 +74,7 @@ export function displayValue(field: LinkField, value: string): string {
   if (value === "") return "—";
   if (field === "status") return STATUSES.find((s) => s.id === value)?.label ?? value;
   if (field === "assignee") return "@" + value;
+  if (field === "priority") return value.toUpperCase();
   return value;
 }
 
@@ -68,15 +94,27 @@ export function parseFields(bag: ParamBag): ParsedFields {
     if (field === "status") {
       if (v === "") return { values, error: "status cannot be cleared" };
       if (!isStatus(v)) {
-        return { values, error: `status must be one of todo, in_progress, done — got "${v}"` };
+        return {
+          values,
+          error: `status must be one of ${STATUSES.map((s) => s.id).join(", ")} — got "${v}"`,
+        };
       }
     }
     if (field === "kind") {
       if (v === "") return { values, error: "kind cannot be cleared" };
-      if (!isKind(v)) return { values, error: `kind must be feature or question — got "${v}"` };
+      if (!isKind(v)) {
+        return {
+          values,
+          error: `kind must be one of ${KINDS.map((k) => k.id).join(", ")} — got "${v}"`,
+        };
+      }
     }
-    if (field === "section" && v !== "" && !isSection(v)) {
-      return { values, error: `section must be one of ${SECTIONS.join(", ")} — got "${v}"` };
+    if (field === "priority") {
+      if (v === "") return { values, error: "priority cannot be cleared" };
+      if (!isPriority(v)) return { values, error: `priority must be p0, p1, p2 or p3 — got "${v}"` };
+    }
+    if (field === "estimate" && v !== "" && !isEstimate(v)) {
+      return { values, error: `estimate must be XS, S, M, L or XL — got "${v}"` };
     }
     if (field === "title" && v === "") {
       return { values, error: "title cannot be cleared" };
@@ -87,13 +125,13 @@ export function parseFields(bag: ParamBag): ParsedFields {
       values[field] = handle;
       continue;
     }
-    values[field] = field === "section" && v === "" ? "Unsorted" : v;
+    values[field] = v;
   }
   return { values };
 }
 
 export function currentValue(ticket: Ticket, field: LinkField): string {
-  const v = ticket[field];
+  const v = ticket[LINK_TO_TICKET[field]];
   return v == null ? "" : String(v);
 }
 

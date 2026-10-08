@@ -9,14 +9,19 @@ export function randomId(len = 20): string {
   return out;
 }
 
-/** `Fast-Forward` becomes `t-fast-forward`, the convention agents write. */
-export function slugId(title: string): string {
-  const slug = title
+/** `Fast-Forward` becomes `<prefix>-fast-forward`; `t` for tickets, `e` epics, `m` milestones. */
+export function slugWith(prefix: string, text: string): string {
+  const slug = text
     .toLowerCase()
     .replace(/\*\*/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 48)
     .replace(/-+$/g, "");
-  return slug ? `t-${slug}` : `t-${randomId(8)}`;
+  return slug ? `${prefix}-${slug}` : `${prefix}-${randomId(8)}`;
+}
+
+/** `Fast-Forward` becomes `t-fast-forward`, the convention agents write. */
+export function slugId(title: string): string {
+  return slugWith("t", title);
 }

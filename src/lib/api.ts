@@ -72,17 +72,38 @@ export async function readJson(req: Request): Promise<Record<string, unknown> | 
   }
 }
 
-/** Pulls only the known settable fields out of an arbitrary request body. */
+/**
+ * Pulls only the known settable fields out of an arbitrary request body.
+ *
+ * Text fields are stringified, id-ish fields keep null as "clear this", and the
+ * list and number fields pass through for `buildSet` to validate — it owns the
+ * rules, this only owns which keys are allowed in.
+ */
 export function pickPatch(body: Record<string, unknown>) {
   const out: Record<string, unknown> = {};
-  for (const k of ["title", "kind", "status", "section", "branch", "notes"]) {
+  for (const k of [
+    "title",
+    "kind",
+    "status",
+    "priority",
+    "branch",
+    "notes",
+    "blocked_reason",
+    "design_doc",
+    "criteria",
+    "decision",
+  ]) {
     if (body[k] !== undefined) out[k] = body[k] === null ? "" : String(body[k]);
   }
-  if (body.assignee !== undefined) {
-    out.assignee = body.assignee === null || body.assignee === "" ? null : String(body.assignee);
+  for (const k of ["assignee", "estimate", "epic_id", "epic", "milestone_id", "milestone"]) {
+    if (body[k] !== undefined) out[k] = body[k] === null || body[k] === "" ? null : String(body[k]);
+  }
+  for (const k of ["labels", "depends_on", "rank"]) {
+    if (body[k] !== undefined) out[k] = body[k];
   }
   return out;
 }
+
 
 /**
  * Wraps a route handler so an unconfigured or unreachable database answers with

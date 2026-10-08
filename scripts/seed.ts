@@ -1,34 +1,55 @@
 /**
- * Seeds from the artifact export in seed-data/tickets/.
- *
- * Each file is one document as the old board stored it. The only transforms are
- * `history` array -> ticket_events rows, and ISO strings -> timestamptz. Field
- * names match one to one.
+ * Seeds the board from seed-data/board.json: milestones, epics, then tickets.
  *
  *   npm run db:seed            # insert anything missing, leave the rest alone
- *   npm run db:seed -- --reset # wipe both tables first
+ *   npm run db:seed -- --reset # wipe everything first (back up with db:export!)
+ *
+ * Ticket order in the file is the order in each column, top to bottom.
  */
-import { readdirSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Pool } from "pg";
 
-type HistoryEntry = { at?: string; by?: string; text?: string };
-type Exported = {
-  title?: string;
-  kind?: string;
-  status?: string;
-  assignee?: string | null;
-  section?: string;
-  branch?: string;
-  notes?: string;
-  created_at?: string;
-  updated_at?: string;
-  history?: HistoryEntry[];
+type Seed = {
+  milestones: {
+    id: string;
+    name: string;
+    goal?: string;
+    target_date?: string | null;
+    status?: string;
+  }[];
+  epics: {
+    id: string;
+    name: string;
+    summary?: string;
+    color?: string;
+    status?: string;
+    owner?: string | null;
+  }[];
+  tickets: {
+    id: string;
+    title: string;
+    kind?: string;
+    status?: string;
+    assignee?: string | null;
+    epic?: string | null;
+    milestone?: string | null;
+    priority?: string;
+    estimate?: string | null;
+    labels?: string[];
+    depends_on?: string[];
+    blocked_reason?: string;
+    design_doc?: string;
+    criteria?: string;
+    decision?: string;
+    branch?: string;
+    notes?: string;
+  }[];
 };
 
 const here = dirname(fileURLToPath(import.meta.url));
-const dir = join(here, "..", "seed-data", "tickets");
+const seed = JSON.parse(readFileSync(join(here, "..", "seed-data", "board.json"), "utf8")) as Seed;
 
 const url = process.env.DATABASE_URL;
 if (!url) {
@@ -43,12 +64,6 @@ const pool = new Pool({
   ssl: url.includes("sslmode=disable") ? false : { rejectUnauthorized: false },
 });
 
-function iso(v: unknown, fallback: string): string {
-  if (typeof v !== "string") return fallback;
-  const d = new Date(v);
-  return Number.isNaN(d.getTime()) ? fallback : d.toISOString();
-}
-
 const client = await pool.connect();
 try {
   await client.query("begin");
@@ -56,64 +71,76 @@ try {
   if (reset) {
     await client.query("delete from ticket_events");
     await client.query("delete from tickets");
-    console.log("Cleared both tables.");
+    await client.query("delete from epics");
+    await client.query("delete from milestones");
+    console.log("Cleared tickets, history, epics and milestones.");
   }
 
-  const files = readdirSync(dir).filter((f) => f.endsWith(".json"));
-  let inserted = 0;
-  let skipped = 0;
-  let events = 0;
+  let m = 0;
+  for (const [i, x] of seed.milestones.entries()) {
+    const r = await client.query(
+      `insert into milestones (id, name, goal, target_date, status, position)
+       values ($1,$2,$3,$4,$5,$6) on conflict (id) do nothing`,
+      [x.id, x.name, x.goal ?? "", x.target_date ?? null, x.status ?? "upcoming", i + 1],
+    );
+    m += r.rowCount ?? 0;
+  }
 
-  for (const file of files) {
-    const id = file.replace(/\.json$/, "");
-    const doc = JSON.parse(readFileSync(join(dir, file), "utf8")) as Exported;
-    const now = new Date().toISOString();
-    const createdAt = iso(doc.created_at, now);
+  let e = 0;
+  for (const [i, x] of seed.epics.entries()) {
+    const r = await client.query(
+      `insert into epics (id, name, summary, color, status, owner, position)
+       values ($1,$2,$3,$4,$5,$6,$7) on conflict (id) do nothing`,
+      [x.id, x.name, x.summary ?? "", x.color ?? "e1", x.status ?? "active", x.owner ?? null, i + 1],
+    );
+    e += r.rowCount ?? 0;
+  }
 
-    const res = await client.query(
+  // Dependencies point at other tickets, so they go in once every row exists.
+  let t = 0;
+  for (const [i, x] of seed.tickets.entries()) {
+    const r = await client.query(
       `insert into tickets
-         (id, title, kind, status, assignee, section, branch, notes, created_at, updated_at, version)
-       values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,1)
-       on conflict (id) do nothing
-       returning id`,
+         (id, title, kind, status, assignee, epic_id, milestone_id, priority, estimate, labels,
+          blocked_reason, design_doc, criteria, decision, branch, notes, rank)
+       values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)
+       on conflict (id) do nothing returning id`,
       [
-        id,
-        String(doc.title ?? id),
-        doc.kind === "question" ? "question" : "feature",
-        doc.status === "in_progress" || doc.status === "done" ? doc.status : "todo",
-        doc.assignee || null,
-        doc.section ?? "Unsorted",
-        doc.branch ?? "",
-        doc.notes ?? "",
-        createdAt,
-        iso(doc.updated_at, createdAt),
+        x.id,
+        x.title,
+        x.kind ?? "feature",
+        x.status ?? "backlog",
+        x.assignee ?? null,
+        x.epic ?? null,
+        x.milestone ?? null,
+        x.priority ?? "p2",
+        x.estimate ?? null,
+        x.labels ?? [],
+        x.blocked_reason ?? "",
+        x.design_doc ?? "",
+        x.criteria ?? "",
+        x.decision ?? "",
+        x.branch ?? "",
+        x.notes ?? "",
+        (i + 1) * 1000,
       ],
     );
-
-    if (res.rowCount === 0) {
-      skipped += 1;
-      continue;
-    }
-    inserted += 1;
-
-    // Oldest first, so bigserial ids run in the same order as the timestamps and
-    // the Activity tab's keyset paging stays in step with `at`.
-    const history = Array.isArray(doc.history) ? [...doc.history] : [];
-    history.sort((a, b) => String(a.at ?? "").localeCompare(String(b.at ?? "")));
-    for (const h of history) {
+    if (r.rowCount) {
+      t += 1;
       await client.query(
-        "insert into ticket_events (ticket_id, at, actor, text) values ($1,$2,$3,$4)",
-        [id, iso(h.at, createdAt), String(h.by ?? "claude"), String(h.text ?? "changed")],
+        "insert into ticket_events (ticket_id, actor, text) values ($1,'claude','created (seed)')",
+        [x.id],
       );
-      events += 1;
+    }
+  }
+  for (const x of seed.tickets) {
+    if (x.depends_on?.length) {
+      await client.query("update tickets set depends_on = $2 where id = $1", [x.id, x.depends_on]);
     }
   }
 
   await client.query("commit");
-  console.log(
-    `Seeded ${inserted} tickets and ${events} events from ${files.length} files` +
-      (skipped ? `, skipped ${skipped} that already existed.` : "."),
-  );
+  console.log(`Seeded ${m} milestones, ${e} epics and ${t} tickets.`);
 } catch (err) {
   await client.query("rollback");
   console.error("Seed failed:", err instanceof Error ? err.message : err);

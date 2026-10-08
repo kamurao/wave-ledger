@@ -1,0 +1,1668 @@
+{
+  "exported_at": "2026-10-08T09:29:28.427Z",
+  "tickets": [
+    {
+      "id": "7ihjmufr6blbibx1d8ob",
+      "title": "Data-driven Tower definitions: TowerArchetype + TowerRoster",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "Romaium",
+      "section": "Unsorted",
+      "branch": "feature/Franco-Enemies-Towers",
+      "notes": "TowerArchetype is one asset per tower; TowerRoster is a list that applies each archetype to its card by Id, same pattern as EnemyRoster. Wired into GameController.Awake and BalancingEngine, in the order BalanceSettings → TowerRoster → CardSettings. 3 new EditMode tests; 329/329 pass. It has no effect until a roster asset exists. Still to do: LevelBuilder asset generation and a scene rebuild.",
+      "created_at": "2026-09-21T10:51:19.512Z",
+      "updated_at": "2026-09-21T10:51:19.512Z",
+      "version": 1
+    },
+    {
+      "id": "t-act-progression",
+      "title": "Figure out a way to progress through acts, and make it faster paced",
+      "kind": "feature",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-balancing-engine-cracks",
+      "title": "Update Balancing Engine to reveal cracks?",
+      "kind": "question",
+      "status": "todo",
+      "assignee": null,
+      "section": "KEN",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-base-chip-damage",
+      "title": "Does our base take chip damage? Does it heal after every level?",
+      "kind": "question",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-card-end-of-wave",
+      "title": "Card from your deck at the end of your wave, not at the start",
+      "kind": "feature",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-damage-types",
+      "title": "What different types of damage do we introduce?",
+      "kind": "question",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-changes",
+      "notes": "Element enum: Fire, Frost, Storm, Venom, set per tower by the equipped Sigil.",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T13:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-deck-creation",
+      "title": "How do we let players create the deck?",
+      "kind": "question",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-elemental-minions",
+      "title": "Elemental minions?",
+      "kind": "question",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "KEN",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T10:17:21.089Z",
+      "version": 1
+    },
+    {
+      "id": "t-fast-forward",
+      "title": "Fast-Forward",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "KEN",
+      "branch": "feature/ken-new-changes",
+      "notes": "Top-right button beside Settings and Compendium: cycles 1x -> 2x -> 3x -> 1x. Must cooperate with the other Time.timeScale owners (Settings pause, Forecast pause, Focus Fire slow-mo). Written without WAVE_LEDGER_TOKEN.",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-25T23:02:32.350Z",
+      "version": 2
+    },
+    {
+      "id": "t-focus-fire-favor",
+      "title": "Focus fire: can certain towers favor certain enemies?",
+      "kind": "question",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-gem-balance",
+      "title": "Balance gaining gems so the hero can't just tank waves to mine a lot of gold",
+      "kind": "feature",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-hero-tower-collision",
+      "title": "Add collision box for hero with towers",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "Romaium",
+      "section": "Unsorted",
+      "branch": "feature/Franco-Enemies-Towers",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-28T11:45:53.013Z",
+      "version": 2
+    },
+    {
+      "id": "t-key-gate",
+      "title": "KEY MECHANICS: Gate",
+      "kind": "feature",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-key-levels",
+      "title": "KEY MECHANICS: Levels",
+      "kind": "feature",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-keyword-mechanics",
+      "title": "KEYWORD mechanics. Bold the keywords ('**slow**' etc.)",
+      "kind": "feature",
+      "status": "todo",
+      "assignee": null,
+      "section": "KEN",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-max-level-skill-tree",
+      "title": "If we max level a tower it goes into a different skill tree",
+      "kind": "feature",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-overarching-story",
+      "title": "Come up with an overarching story to get our ideas together?",
+      "kind": "feature",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-play-more-games",
+      "title": "We should play more games, we keep referring to sts2",
+      "kind": "feature",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "Research task: play other deckbuilders and tower defense games for reference.",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-skip-card-rewards",
+      "title": "Add skip card rewards",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-changes",
+      "notes": "Skip button exists on DraftView and DiscoverView.",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T13:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-slow-pacing",
+      "title": "How do we want to deal with the slow paced gameplay?",
+      "kind": "question",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-toggle-scene-off",
+      "title": "Toggle scene off",
+      "kind": "feature",
+      "status": "done",
+      "assignee": null,
+      "section": "KEN",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T10:17:07.747Z",
+      "version": 1
+    },
+    {
+      "id": "t-tower-chip-damage",
+      "title": "Do the towers take chip damage?",
+      "kind": "question",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-changes",
+      "notes": "Answer: yes. Towers have structural health, show fire when hurt, and can be repaired.",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-26T15:45:30.052Z",
+      "version": 3
+    },
+    {
+      "id": "t-tower-damage",
+      "title": "Tower damage",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "KEN",
+      "branch": "feature/ken-changes",
+      "notes": "Enemies flagged CanAttackTowers damage towers (LaneCombatSystem); TowerDamageFire shows damage; gems repair.",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T13:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-towers-damaged",
+      "title": "Towers being damaged by enemies?",
+      "kind": "question",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-changes",
+      "notes": "Do we like it? Answer: YES. Follow-up: implement tower damage from enemies.",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T13:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-towers-middle",
+      "title": "Towers in the middle?",
+      "kind": "question",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-want-a-hero",
+      "title": "Do we want a hero?",
+      "kind": "question",
+      "status": "todo",
+      "assignee": null,
+      "section": "Unsorted",
+      "branch": "",
+      "notes": "",
+      "created_at": "2026-09-21T12:00:00.000Z",
+      "updated_at": "2026-09-21T12:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-kanban-board",
+      "title": "Build the **kanban** board and Claude workflow",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/master",
+      "notes": "Board artifact plus the Kanban section in CLAUDE.md.",
+      "created_at": "2026-09-21T12:05:00.000Z",
+      "updated_at": "2026-09-21T10:07:38.523Z",
+      "version": 1
+    },
+    {
+      "id": "xhs0ot8wqui0ckactr67",
+      "title": "Card UI Rework to include Keywords",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-changes",
+      "notes": "Scope: Slay-the-Spire hand (no shrinking, overlap + full hover reveal), max hand 10, played spells/skills fly to centre then away, drop 'Single target' in favour of AOE-only labelling, plus card-face hierarchy fixes (bigger keyword icon, hero effect row, name truncation, footer clipping).",
+      "created_at": "2026-09-21T14:01:06.837Z",
+      "updated_at": "2026-09-22T00:00:00.000Z",
+      "version": 1
+    },
+    {
+      "id": "t-attunement-powers",
+      "title": "Hero-Tower synergy: Attunement Powers",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Implement approved Shatter, Breach, Contagion Power engines, encounter lifecycle, UI, persistence, and balance coverage.",
+      "created_at": "2026-09-23T14:23:41.274Z",
+      "updated_at": "2026-09-25T09:13:46.454Z",
+      "version": 2
+    },
+    {
+      "id": "t-port-ken-card-rework",
+      "title": "Port tower **damage visual**, **Attunement** and **card keyword rework** + art from feature/ken-changes onto master's card set",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "Romaium",
+      "section": "Unsorted",
+      "branch": "feature/port-ken-card-rework",
+      "notes": "Cherry-pick the three features from feature/ken-changes (not Synergy/Powers or Sigils unless required), then rewrite master's final card set to use the keyword card text.",
+      "created_at": "2026-09-24T11:40:28.649Z",
+      "updated_at": "2026-09-24T12:05:13.411Z",
+      "version": 3
+    },
+    {
+      "id": "t-build-on-every-open-square",
+      "title": "Allow tower placement on every open grid square",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Remove the invisible lane-distance restriction so every non-path, non-structure, non-prop square has a TowerSlot; rebuild and verify MainLevel.",
+      "created_at": "2026-09-25T09:24:18.018Z",
+      "updated_at": "2026-09-25T09:24:18.018Z",
+      "version": 1
+    },
+    {
+      "id": "t-tower-action-icons",
+      "title": "Add polished icons for tower Upgrade, Repair, and Sell actions",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Generate a cohesive transparent fantasy icon set, import as Resources sprites, and integrate with live action labels in TowerStatsPanelView.",
+      "created_at": "2026-09-25T09:36:31.366Z",
+      "updated_at": "2026-09-25T09:36:31.366Z",
+      "version": 1
+    },
+    {
+      "id": "t-sigils-boss-affinity",
+      "title": "**Sigils** + boss element affinities, then stackable **Poison**/Burn, tower Growth, Shop card upgrades",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Built on feature/ken-new-changes (uncommitted): Sigils + boss element affinities + drops, Poison/Burn stacks, Powers/Growth/Resonance (own reward after waves 1 and 5), placement forecast, Shop card upgrades + Forge event, data-driven relics, runtime HUD. 649/649 EditMode; PlayMode 20/21 (the 1 failure is a pre-existing Hero tray/attunement layout test in files with another sessions uncommitted edits). Full status, sim results and known gaps: docs/SCALING_AND_SYNERGY.md. Sim finding: boss-aware attuning and planning a build show no win-rate edge in a single-Level sim - a run-length sim is the missing tool. Not visually verified: placement forecast, WEAK popups, callout banner, Shop upgrade buttons. Written without WAVE_LEDGER_TOKEN (unset).",
+      "created_at": "2026-09-25T09:57:31.981Z",
+      "updated_at": "2026-09-25T12:01:13.834Z",
+      "version": 2
+    },
+    {
+      "id": "t-shift-click-repair",
+      "title": "**Shift-click** a tower to repair it, with a green **+** cursor",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Hold Shift over a damaged tower: cursor becomes a green plus, left-click repairs (RunState.TryRepairTower, same Gem cost as the panel button). No token set, so attributed to someone.",
+      "created_at": "2026-09-25T14:15:35.597Z",
+      "updated_at": "2026-09-25T14:15:35.597Z",
+      "version": 1
+    },
+    {
+      "id": "t-translucent-hud-tower-panel",
+      "title": "Translucent top HUD and tower stats panel inspired by reference",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Style top UI bar and tower inspector to match supplied dark translucent fantasy reference, preserving existing controls and data.",
+      "created_at": "2026-09-25T14:22:17.541Z",
+      "updated_at": "2026-09-25T14:22:17.541Z",
+      "version": 1
+    },
+    {
+      "id": "t-spell-cast-animations",
+      "title": "Visible spell casting and skyfall impacts",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Add visible spell feedback, especially Fireball and Meteor descending from the sky and impact effects.",
+      "created_at": "2026-09-26T16:01:37.978Z",
+      "updated_at": "2026-09-26T16:01:37.978Z",
+      "version": 1
+    },
+    {
+      "id": "t-enemy-status-visuals",
+      "title": "Rework enemy **status** display: body tint + FX, foot ring, hover tooltip, new HP bar",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Replaces EnemyStatusOverlay letter chips and the world-space enemy health bar. Burn/Poison/Chill/Stun shown as body tint + particles and a 4-segment foot ring; exact breakdown in a hover tooltip; polished screen-space HP bar with shield/ward/resist tells.",
+      "created_at": "2026-09-27T02:12:07.983Z",
+      "updated_at": "2026-09-27T02:12:07.983Z",
+      "version": 1
+    },
+    {
+      "id": "t-card-art-badges-hero-portrait",
+      "title": "Complete card art and update cost badges and Hero portrait",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Audit missing live card artwork, generate style-consistent images at frame resolution, rework colored cost medallions, and match Hero avatar to in-game knight.",
+      "created_at": "2026-09-27T02:14:04.166Z",
+      "updated_at": "2026-09-27T02:14:04.166Z",
+      "version": 1
+    },
+    {
+      "id": "t-sigil-tower-aura",
+      "title": "**Sigil** towers: in-world element aura (rune ring, particles, attune sweep) replaces floating letters",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Replaces SigilTowerMarkers letter squares with a rotating rune ring + element particles; attuning draws the ring in; muzzle burst on fire.",
+      "created_at": "2026-09-27T03:06:20.450Z",
+      "updated_at": "2026-09-27T03:06:20.450Z",
+      "version": 1
+    },
+    {
+      "id": "t-tower-rank-badge",
+      "title": "Tower **level** rank badge (chevrons, star at mutator, growth %) replaces gold pips",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Screen-space badge at tower base; absorbs TowerGrowthLabels; removes TowerVisualSync level pips.",
+      "created_at": "2026-09-27T03:06:20.999Z",
+      "updated_at": "2026-09-27T03:06:20.999Z",
+      "version": 1
+    },
+    {
+      "id": "t-debug-console",
+      "title": "**Debug** menu tabs + command console (spawn cards, enemies, sigils, relics, statuses, time control)",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Tabbed IMGUI debug window plus a console with autocomplete/history; keyboard capture guard so typing does not trigger hotkeys.",
+      "created_at": "2026-09-27T03:06:21.354Z",
+      "updated_at": "2026-09-27T03:06:21.354Z",
+      "version": 1
+    },
+    {
+      "id": "t-realtime-presentation",
+      "title": "Game **speed** must not speed up camera, cards or HUD animations",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Camera pan, hand lerps, HUD flashes, toasts and ambient decoration move to unscaled time; sim-driven visuals stay scaled.",
+      "created_at": "2026-09-27T03:50:00.771Z",
+      "updated_at": "2026-09-27T03:50:00.771Z",
+      "version": 1
+    },
+    {
+      "id": "t-sigil-animations",
+      "title": "**Sigil** pickup flight-to-stash + per-element attune channel (fire ring, frost swirl, storm arcs, venom pool)",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Drop reveals at the death spot and flies into its panel chip; equipping plays an element-specific build-up and finale.",
+      "created_at": "2026-09-27T03:50:01.164Z",
+      "updated_at": "2026-09-27T03:50:01.164Z",
+      "version": 1
+    },
+    {
+      "id": "t-tower-projectiles",
+      "title": "Per-tower **projectiles** and impacts (fireball, chain lightning, ice shards, spore globs, shrapnel)",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "TowerShotProfiles table + TowerShotLibrary asset from installed Vefects/TD Kit art; exact Tesla chain path shared with the sim.",
+      "created_at": "2026-09-27T03:50:01.538Z",
+      "updated_at": "2026-09-27T03:50:01.538Z",
+      "version": 1
+    },
+    {
+      "id": "t-hud-glass-coverage",
+      "title": "Apply the Gaussian **glass** blur to every in-game panel",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Boss preview, placement forecast, Discover, pile viewer, book, rank badges, and scene-built Settings/Forecast/Draft/RelicToast panels move off UiTheme.Surface/flat colours onto HudGlassStyle.",
+      "created_at": "2026-09-27T05:00:17.504Z",
+      "updated_at": "2026-09-27T05:00:17.504Z",
+      "version": 1
+    },
+    {
+      "id": "t-unified-synergy",
+      "title": "Rework Hero Attunement into **Unified Synergy** (per-keyword tiers, pick-1-of-2 perks, Reactions)",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "One per-Level keyword meter fed by cards, tower procs and Hero kills; tier-ups offer a non-blocking perk choice (tower- or hero-side); T2+T2 keyword pairs unlock Reactions (Contagion, Shatter, Breach, Thermal Shock, Rally Cry). Replaces AttunementState/Table and the Resonance display.",
+      "created_at": "2026-09-27T05:00:17.890Z",
+      "updated_at": "2026-09-27T05:00:17.890Z",
+      "version": 1
+    },
+    {
+      "id": "t-council-ruling-audit-skill",
+      "title": "**Skill**: verify council rulings still match the code",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "Romaium",
+      "section": "Unsorted",
+      "branch": "master",
+      "notes": "Personal Claude skill that treats each council ruling in docs/ (starter deck, special tower rarities/copies, melee guard, reward cadence, level-1 enemies/waves) as a spec, checks code + baked assets + tests against it, then runs EditMode suite, live Editor asset checks and the 1000-trial Balance gate.",
+      "created_at": "2026-09-28T09:59:17.200Z",
+      "updated_at": "2026-09-28T09:59:17.200Z",
+      "version": 1
+    },
+    {
+      "id": "t-tower-aggro-rework",
+      "title": "Towers **survive** longer, Hero draws **aggro**, melee towers tougher + longer reach",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "Romaium",
+      "section": "Unsorted",
+      "branch": "feature/Franco-Enemies-Towers",
+      "notes": "Council verdict (Aggro, don't hold; one-target swings): enemy melee swing hits ONE target (Hero within 1.5, else nearest tower within 1.2); blocked enemies fight only their Monster; Hero regen 1%/s in combat, 4%/s after 3s out; melee Guard 60/50/45% and reach Sword 2.0, Spike Burst 3.4, Flamethrower 3.2/75deg; tower-death cause counter in Balancing Engine. Balance gate NOT run this session.",
+      "created_at": "2026-09-28T11:45:53.480Z",
+      "updated_at": "2026-09-28T11:45:53.480Z",
+      "version": 1
+    },
+    {
+      "id": "t-tower-wall-link",
+      "title": "Neighbouring towers raise a **wall** (fence Ward that soaks hits, rebuilds each wave)",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "Romaium",
+      "section": "Unsorted",
+      "branch": "feature/Franco-Enemies-Towers",
+      "notes": "LLM-council verdict: same-row orthogonal neighbour towers link (max 2 links each); each fence segment holds 10 Ward that soaks melee AND hunter hits before Guard; breaks to fence-broken.fbx; free refill at wave start; no Gem cost. SimBot has no placement heuristic for it yet (bounded skew, flag at next gate run).",
+      "created_at": "2026-09-28T11:45:53.885Z",
+      "updated_at": "2026-09-28T11:45:53.885Z",
+      "version": 1
+    },
+    {
+      "id": "t-accurate-scene-preview",
+      "title": "Make the scene preview match the played UI",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Capture the rendered MainLevel including its UI camera and runtime HUD, and make preview usage clear in the Editor.",
+      "created_at": "2026-09-29T12:53:38.828Z",
+      "updated_at": "2026-09-29T12:53:38.828Z",
+      "version": 1
+    },
+    {
+      "id": "t-sigil-chip-tooltip",
+      "title": "Hovering a **Sigil** chip shows which Sigil it is (name, element, effect, count)",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "The collapsed Sigil panel only showed an icon; the description went to a detail line that is hidden while collapsed.",
+      "created_at": "2026-09-29T13:41:53.254Z",
+      "updated_at": "2026-09-29T13:41:53.254Z",
+      "version": 1
+    },
+    {
+      "id": "t-hovered-card-above-hud",
+      "title": "Hovered hand cards draw **on top** of the Sigil panel",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "A card that glowed as hovered but was not HandView popped card kept sort order 0 and stayed under the Sigil panel.",
+      "created_at": "2026-09-29T13:41:53.703Z",
+      "updated_at": "2026-09-29T13:41:53.703Z",
+      "version": 1
+    },
+    {
+      "id": "t-natural-map-border",
+      "title": "**Natural** map border: organic grass edge, rising wooded hills, broken fence remnants",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "The board read as a fenced rectangle on a flat box with grid-aligned tree rows.",
+      "created_at": "2026-09-29T13:47:18.857Z",
+      "updated_at": "2026-09-29T13:47:18.857Z",
+      "version": 1
+    },
+    {
+      "id": "t-natural-lane",
+      "title": "Lane drawn as a **natural** dirt road: rounded turns, ragged verges, ruts; trail continues off-board",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "The lane was a staircase of square dirt tiles with hard right-angle turns.",
+      "created_at": "2026-09-29T14:04:44.835Z",
+      "updated_at": "2026-09-29T14:04:44.835Z",
+      "version": 1
+    },
+    {
+      "id": "t-diorama-polish",
+      "title": "Stage **diorama** polish: warm lane, spawn gate, SSAO, rocky back ridge",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "From the INSPIRATION.png comparison: warmer road, a real gate instead of the orange frame, ambient occlusion, cliffs framing the back.",
+      "created_at": "2026-09-29T14:15:26.985Z",
+      "updated_at": "2026-09-29T14:15:26.985Z",
+      "version": 1
+    },
+    {
+      "id": "t-mainboss-cape-asset",
+      "title": "**MainBoss** Ember Wraith asset: attach **cape** with physics + smoke particles",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Rigged Meshy ember wraith (MainBoss/) + separate cape mesh, fitted and skinned in Blender to 7 spring-simulated bone chains; smoke/embers off the cape; replaces the Minotaur as the boss body. Card: docs/features/t-mainboss-cape-asset.md",
+      "created_at": "2026-09-29T14:38:23.153Z",
+      "updated_at": "2026-09-29T15:19:36.425Z",
+      "version": 2
+    },
+    {
+      "id": "t-ember-wraith-boss-battle",
+      "title": "**Ember Wraith boss battle**: cinematic intro after wave N + off-path duel with attack patterns",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "After a configurable wave (test: 1) the Ember Wraith watches from a high perch, leaps down and slashes the Hero, who parries, leaps back and squares off. Then an off-path duel: he roams the board with telegraphed special attacks; towers + Hero fight back; waves pause until he dies; Hero respawns if downed. Clips retargeted from the Human Mega Animations pack.",
+      "created_at": "2026-09-29T15:25:10.542Z",
+      "updated_at": "2026-09-29T15:25:10.542Z",
+      "version": 1
+    },
+    {
+      "id": "t-franco-boss-name",
+      "title": "**Franco** boss-name toggle in Settings (default on)",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Settings toggle (default on) that renames the Ember Wraith on every display surface (title card, boss bar, banners, tooltip, compendium). Display-only; sim/recordings keep Ember Wraith.",
+      "created_at": "2026-09-30T09:52:33.754Z",
+      "updated_at": "2026-09-30T09:52:33.754Z",
+      "version": 1
+    },
+    {
+      "id": "t-tower-branches",
+      "title": "Level-3 tower **branches** + one **Champion** per tower type",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "Romaium",
+      "section": "Unsorted",
+      "branch": "feature/Franco-Enemies-Towers",
+      "notes": "From an LLM Council ruling (2026-09-30): 2 passive branches per starter tower (Slingshot Ricochet/Tar, Archery Volley/Watchtower, Catapult Firepot/Quake, Ballista Skewer/Pinning Bolt). First tower of a type to reach Lv3 picks the branch for that type (resets each Level); only that tower (the Champion, crowned) gets the effect; crown hands off on destroy/sell. Non-Champion Lv3 gets a real stat step. SimBot branch policy + AlwaysA vs AlwaysB within 5pts gate. Building on top of feature/ken-new-changes (merging it first) - reuses Ken's keyword-driven mutator dispatch and rank badge (t-tower-rank-badge).",
+      "created_at": "2026-09-30T11:39:31.165Z",
+      "updated_at": "2026-09-30T11:39:31.165Z",
+      "version": 1
+    },
+    {
+      "id": "t-branch-promo-infographic",
+      "title": "Promotional **infographic** for feature/ken-new-changes",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "One compact infographic covering the 28 gameplay feature cards with illustrative scenes, factual labels, and a live UI inset. Source and output under docs/feature-overview and tools/feature-overview.",
+      "created_at": "2026-09-30T11:44:17.603Z",
+      "updated_at": "2026-09-30T11:44:17.603Z",
+      "version": 1
+    },
+    {
+      "id": "t-feature-toggle-manager",
+      "title": "**Feature Toggle Manager**: /feature-toggle-manager web UI to toggle and delete features",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-new-changes",
+      "notes": "Local web UI (skill) listing toggle-managed features; flip on/off (card + StreamingAssets state file, live in play mode); delete runs a headless Claude job that removes the feature cleanly and recompiles/tests. Every new feature ships with a toggle from now on.",
+      "created_at": "2026-09-30T11:51:58.694Z",
+      "updated_at": "2026-09-30T11:51:58.694Z",
+      "version": 1
+    },
+    {
+      "id": "t-rts-loop",
+      "title": "**RTS loop**: strip the card engine; build bar, one Gold, timed waves, Hero abilities",
+      "kind": "feature",
+      "status": "in_progress",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-rts-loop",
+      "notes": "Plan: cards removed (spells -> Hero abilities, Monster cards -> Barracks tower), map kept with tower unlocks/relics/Hero talents, timed overlapping waves with call-early, old loop toggled off first then deleted. M1 = t-rts-mode, t-build-bar, t-single-gold, t-timed-waves, t-hero-abilities.",
+      "created_at": "2026-09-30T14:16:08.433Z",
+      "updated_at": "2026-09-30T14:16:08.433Z",
+      "version": 1
+    },
+    {
+      "id": "t-procedural-terrain",
+      "title": "**Procedural** rocky terrain: per-level generated maps with slopes, cliffs, mesas, ledge pads and 3D grass",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-rts-loop",
+      "notes": "Runtime seeded generator (Core) + TerrainMapBuilder; non-square play area, strata rock faces, tower pads on flattened ledges, GPU-instanced grass. Replaces the 20x14 tile board.",
+      "created_at": "2026-10-01T00:18:57.730Z",
+      "updated_at": "2026-10-01T02:05:19.053Z",
+      "version": 2
+    },
+    {
+      "id": "t-codex-imagegen-skill",
+      "title": "**Skill**: generate images with local Codex imagegen",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-rts-loop",
+      "notes": "Claude skill + tools/imagegen/codex-imagegen.ps1 wrapping codex exec with the built-in imagegen skill.",
+      "created_at": "2026-10-01T00:18:58.128Z",
+      "updated_at": "2026-10-01T02:05:20.561Z",
+      "version": 2
+    },
+    {
+      "id": "t-drop-inspiration-ref",
+      "title": "Drop **INSPIRATION.png** as the art target",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-rts-loop",
+      "notes": "Remove references from autopilot prompts, GAME_VISION, POLISH_GAPS, comments; rename InspirationArtPass and Assets/Art/Inspiration.",
+      "created_at": "2026-10-01T00:18:58.509Z",
+      "updated_at": "2026-10-01T02:05:19.814Z",
+      "version": 2
+    },
+    {
+      "id": "t-hero-meshy-model",
+      "title": "Replace the Hero with the **Meshy Fire Hero**: physics loincloth + new sword",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-rts-loop",
+      "notes": "HERO/ zips: rigged Meshy biped (walk/run), loincloth, sword. Combine in Blender (loincloth on spring bone chains like the Ember Wraith cape), export FBX, swap out the KayKit Knight, retarget hero clips.",
+      "created_at": "2026-10-01T05:10:00.042Z",
+      "updated_at": "2026-10-01T05:40:07.358Z",
+      "version": 2
+    },
+    {
+      "id": "t-third-person-camera",
+      "title": "**Camera View** toggle: 3rd-person follow cam on the Hero, WASD moves him",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-rts-loop",
+      "notes": "Key + HUD button toggles an over-the-shoulder follow camera (Fortnite / God of War style); in that mode WASD moves the Hero relative to the camera instead of panning.",
+      "created_at": "2026-10-01T05:58:11.866Z",
+      "updated_at": "2026-10-01T14:04:59.662Z",
+      "version": 2
+    },
+    {
+      "id": "t-hero-fire-aura",
+      "title": "Fire Hero: body-length **sword**, fire **particles** and **glow**",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-rts-loop",
+      "notes": "Sword rescaled to his full height in Blender; FireHeroAuraFx adds sword/hair flames, embers, flickering light, emission breathing, and a flare on every swing.",
+      "created_at": "2026-10-01T09:47:57.546Z",
+      "updated_at": "2026-10-01T09:49:11.026Z",
+      "version": 2
+    },
+    {
+      "id": "t-hero-cliff-drop",
+      "title": "Hero **traversal**: walk/fall off cliffs to lower ground, jump onto low ledges",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-rts-loop",
+      "notes": "Gravity + cliff drops in HeroController (faces drop-only, never climb), Fall/Land clips, landing ember splash + camera shake.",
+      "created_at": "2026-10-01T10:35:03.403Z",
+      "updated_at": "2026-10-01T14:04:57.965Z",
+      "version": 2
+    },
+    {
+      "id": "t-autopilot-focus",
+      "title": "Autopilot aligned with the new gameplay: **-Focus** steer, vision + planner refresh",
+      "kind": "feature",
+      "status": "done",
+      "assignee": "kamurao",
+      "section": "Unsorted",
+      "branch": "feature/ken-rts-loop",
+      "notes": "start.ps1 -Focus writes docs/autopilot/FOCUS.md which the planner treats as the standing priority; GAME_VISION/plan.md updated for Fire Hero, Camera View, traversal, crosshair building.",
+      "created_at": "2026-10-01T10:35:03.892Z",
+      "updated_at": "2026-10-01T14:05:01.320Z",
+      "version": 2
+    }
+  ],
+  "events": [
+    {
+      "id": "1",
+      "ticket_id": "7ihjmufr6blbibx1d8ob",
+      "at": "2026-09-21T10:51:19.512Z",
+      "actor": "@Romaium",
+      "text": "created"
+    },
+    {
+      "id": "2",
+      "ticket_id": "t-act-progression",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "3",
+      "ticket_id": "t-balancing-engine-cracks",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "4",
+      "ticket_id": "t-base-chip-damage",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "5",
+      "ticket_id": "t-card-end-of-wave",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "6",
+      "ticket_id": "t-damage-types",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "7",
+      "ticket_id": "t-damage-types",
+      "at": "2026-09-21T13:00:00.000Z",
+      "actor": "claude",
+      "text": "moved to Complete (Elements.cs on feature/ken-changes)"
+    },
+    {
+      "id": "8",
+      "ticket_id": "t-deck-creation",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "9",
+      "ticket_id": "t-elemental-minions",
+      "at": "2026-09-21T10:17:21.089Z",
+      "actor": "@kamurao",
+      "text": "moved to In progress"
+    },
+    {
+      "id": "10",
+      "ticket_id": "t-elemental-minions",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "11",
+      "ticket_id": "t-fast-forward",
+      "at": "2026-09-21T10:14:34.975Z",
+      "actor": "@kamurao",
+      "text": "moved to In progress"
+    },
+    {
+      "id": "12",
+      "ticket_id": "t-fast-forward",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "13",
+      "ticket_id": "t-focus-fire-favor",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "14",
+      "ticket_id": "t-gem-balance",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "15",
+      "ticket_id": "t-hero-tower-collision",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "16",
+      "ticket_id": "t-kanban-board",
+      "at": "2026-09-21T10:07:38.523Z",
+      "actor": "@kamurao",
+      "text": "edited"
+    },
+    {
+      "id": "17",
+      "ticket_id": "t-kanban-board",
+      "at": "2026-09-21T12:05:00.000Z",
+      "actor": "claude",
+      "text": "created in In progress"
+    },
+    {
+      "id": "18",
+      "ticket_id": "t-kanban-board",
+      "at": "2026-09-21T12:20:00.000Z",
+      "actor": "claude",
+      "text": "moved to Complete"
+    },
+    {
+      "id": "19",
+      "ticket_id": "t-key-gate",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "20",
+      "ticket_id": "t-key-levels",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "21",
+      "ticket_id": "t-keyword-mechanics",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "22",
+      "ticket_id": "t-max-level-skill-tree",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "23",
+      "ticket_id": "t-overarching-story",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "24",
+      "ticket_id": "t-play-more-games",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "25",
+      "ticket_id": "t-skip-card-rewards",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "26",
+      "ticket_id": "t-skip-card-rewards",
+      "at": "2026-09-21T13:00:00.000Z",
+      "actor": "claude",
+      "text": "moved to Complete (Skip button found in code)"
+    },
+    {
+      "id": "27",
+      "ticket_id": "t-slow-pacing",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "28",
+      "ticket_id": "t-toggle-scene-off",
+      "at": "2026-09-21T10:15:00.291Z",
+      "actor": "@kamurao",
+      "text": "moved to In progress"
+    },
+    {
+      "id": "29",
+      "ticket_id": "t-toggle-scene-off",
+      "at": "2026-09-21T10:17:07.747Z",
+      "actor": "@kamurao",
+      "text": "moved to Complete"
+    },
+    {
+      "id": "30",
+      "ticket_id": "t-toggle-scene-off",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "31",
+      "ticket_id": "t-tower-chip-damage",
+      "at": "2026-09-21T10:13:54.142Z",
+      "actor": "@kamurao",
+      "text": "moved to To do"
+    },
+    {
+      "id": "32",
+      "ticket_id": "t-tower-chip-damage",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "33",
+      "ticket_id": "t-tower-chip-damage",
+      "at": "2026-09-21T13:00:00.000Z",
+      "actor": "claude",
+      "text": "moved to Complete (answered by the tower damage feature)"
+    },
+    {
+      "id": "34",
+      "ticket_id": "t-tower-damage",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "35",
+      "ticket_id": "t-tower-damage",
+      "at": "2026-09-21T13:00:00.000Z",
+      "actor": "claude",
+      "text": "moved to Complete (found in code on feature/ken-changes)"
+    },
+    {
+      "id": "36",
+      "ticket_id": "t-towers-damaged",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "37",
+      "ticket_id": "t-towers-damaged",
+      "at": "2026-09-21T13:00:00.000Z",
+      "actor": "claude",
+      "text": "moved to Complete (implemented: enemies attack towers, YES answer)"
+    },
+    {
+      "id": "38",
+      "ticket_id": "t-towers-middle",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "39",
+      "ticket_id": "t-want-a-hero",
+      "at": "2026-09-21T12:00:00.000Z",
+      "actor": "claude",
+      "text": "imported from the team list"
+    },
+    {
+      "id": "40",
+      "ticket_id": "xhs0ot8wqui0ckactr67",
+      "at": "2026-09-21T14:01:06.837Z",
+      "actor": "@kamurao",
+      "text": "created"
+    },
+    {
+      "id": "41",
+      "ticket_id": "xhs0ot8wqui0ckactr67",
+      "at": "2026-09-22T00:15:00.000Z",
+      "actor": "claude",
+      "text": "picked up on feature/ken-changes"
+    },
+    {
+      "id": "42",
+      "ticket_id": "xhs0ot8wqui0ckactr67",
+      "at": "2026-09-22T00:30:00.000Z",
+      "actor": "claude",
+      "text": "committed and pushed as c47ae07 (hand packs instead of shrinking, headline rule row, MaxHandSize 10, PlayedCardFlourish, 'Single target' row dropped). Test suite not re-run at commit time."
+    },
+    {
+      "id": "54",
+      "ticket_id": "t-attunement-powers",
+      "at": "2026-09-23T14:23:41.296Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "55",
+      "ticket_id": "t-port-ken-card-rework",
+      "at": "2026-09-24T11:40:28.709Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "56",
+      "ticket_id": "t-port-ken-card-rework",
+      "at": "2026-09-24T12:03:06.650Z",
+      "actor": "someone",
+      "text": "edited"
+    },
+    {
+      "id": "57",
+      "ticket_id": "t-port-ken-card-rework",
+      "at": "2026-09-24T12:05:13.417Z",
+      "actor": "someone",
+      "text": "moved to Complete"
+    },
+    {
+      "id": "58",
+      "ticket_id": "t-attunement-powers",
+      "at": "2026-09-25T09:13:46.472Z",
+      "actor": "someone",
+      "text": "edited"
+    },
+    {
+      "id": "59",
+      "ticket_id": "t-build-on-every-open-square",
+      "at": "2026-09-25T09:24:18.023Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "60",
+      "ticket_id": "t-tower-action-icons",
+      "at": "2026-09-25T09:36:31.389Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "61",
+      "ticket_id": "t-sigils-boss-affinity",
+      "at": "2026-09-25T09:57:32.038Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "62",
+      "ticket_id": "t-sigils-boss-affinity",
+      "at": "2026-09-25T12:01:13.851Z",
+      "actor": "someone",
+      "text": "edited"
+    },
+    {
+      "id": "63",
+      "ticket_id": "t-shift-click-repair",
+      "at": "2026-09-25T14:15:35.617Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "64",
+      "ticket_id": "t-translucent-hud-tower-panel",
+      "at": "2026-09-25T14:22:17.555Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "65",
+      "ticket_id": "t-fast-forward",
+      "at": "2026-09-25T23:02:32.364Z",
+      "actor": "someone",
+      "text": "edited"
+    },
+    {
+      "id": "66",
+      "ticket_id": "t-tower-chip-damage",
+      "at": "2026-09-26T15:45:26.336Z",
+      "actor": "@kamurao",
+      "text": "moved to In progress"
+    },
+    {
+      "id": "67",
+      "ticket_id": "t-tower-chip-damage",
+      "at": "2026-09-26T15:45:30.058Z",
+      "actor": "@kamurao",
+      "text": "moved to Complete"
+    },
+    {
+      "id": "68",
+      "ticket_id": "t-spell-cast-animations",
+      "at": "2026-09-26T16:01:38.043Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "69",
+      "ticket_id": "t-enemy-status-visuals",
+      "at": "2026-09-27T02:12:07.998Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "70",
+      "ticket_id": "t-card-art-badges-hero-portrait",
+      "at": "2026-09-27T02:14:04.170Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "71",
+      "ticket_id": "t-sigil-tower-aura",
+      "at": "2026-09-27T03:06:20.504Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "72",
+      "ticket_id": "t-tower-rank-badge",
+      "at": "2026-09-27T03:06:21.004Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "73",
+      "ticket_id": "t-debug-console",
+      "at": "2026-09-27T03:06:21.359Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "74",
+      "ticket_id": "t-realtime-presentation",
+      "at": "2026-09-27T03:50:00.775Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "75",
+      "ticket_id": "t-sigil-animations",
+      "at": "2026-09-27T03:50:01.168Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "76",
+      "ticket_id": "t-tower-projectiles",
+      "at": "2026-09-27T03:50:01.541Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "77",
+      "ticket_id": "t-hud-glass-coverage",
+      "at": "2026-09-27T05:00:17.509Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "78",
+      "ticket_id": "t-unified-synergy",
+      "at": "2026-09-27T05:00:17.894Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "79",
+      "ticket_id": "t-attunement-powers",
+      "at": "2026-09-27T13:30:11.711Z",
+      "actor": "someone",
+      "text": "Superseded by t-unified-synergy: the Attunement-rank direction this ticket described (per-Hero ranks reshaping Rally Strike, feeding Shatter/Breach/Contagion) was reworked into a board-wide per-keyword Synergy system with tower+Hero perks and named Reactions. See docs/SCALING_AND_SYNERGY.md Known gaps. Left in_progress -- owner decides whether to close or repurpose."
+    },
+    {
+      "id": "80",
+      "ticket_id": "t-council-ruling-audit-skill",
+      "at": "2026-09-28T09:59:17.244Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "81",
+      "ticket_id": "t-hero-tower-collision",
+      "at": "2026-09-28T11:45:53.029Z",
+      "actor": "someone",
+      "text": "moved to In progress"
+    },
+    {
+      "id": "82",
+      "ticket_id": "t-tower-aggro-rework",
+      "at": "2026-09-28T11:45:53.486Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "83",
+      "ticket_id": "t-tower-wall-link",
+      "at": "2026-09-28T11:45:53.889Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "84",
+      "ticket_id": "t-hero-tower-collision",
+      "at": "2026-09-28T12:15:15.395Z",
+      "actor": "someone",
+      "text": "Implemented on feature/Franco-Enemies-Towers (uncommitted): 388/388 EditMode tests pass incl. 21 new (TowerAggroAndWallTests). Kept in progress by the user until an in-Editor playtest and a Balance gate run -- the gate was deliberately skipped this session. See docs/TOWER_REWORK_FOLLOWUPS.md for what to check and the tuning dial order."
+    },
+    {
+      "id": "85",
+      "ticket_id": "t-tower-aggro-rework",
+      "at": "2026-09-28T12:15:15.856Z",
+      "actor": "someone",
+      "text": "Implemented on feature/Franco-Enemies-Towers (uncommitted): 388/388 EditMode tests pass incl. 21 new (TowerAggroAndWallTests). Kept in progress by the user until an in-Editor playtest and a Balance gate run -- the gate was deliberately skipped this session. See docs/TOWER_REWORK_FOLLOWUPS.md for what to check and the tuning dial order."
+    },
+    {
+      "id": "86",
+      "ticket_id": "t-tower-wall-link",
+      "at": "2026-09-28T12:15:16.242Z",
+      "actor": "someone",
+      "text": "Implemented on feature/Franco-Enemies-Towers (uncommitted): 388/388 EditMode tests pass incl. 21 new (TowerAggroAndWallTests). Kept in progress by the user until an in-Editor playtest and a Balance gate run -- the gate was deliberately skipped this session. See docs/TOWER_REWORK_FOLLOWUPS.md for what to check and the tuning dial order."
+    },
+    {
+      "id": "87",
+      "ticket_id": "t-accurate-scene-preview",
+      "at": "2026-09-29T12:53:38.841Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "88",
+      "ticket_id": "t-sigil-chip-tooltip",
+      "at": "2026-09-29T13:41:53.309Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "89",
+      "ticket_id": "t-hovered-card-above-hud",
+      "at": "2026-09-29T13:41:53.708Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "90",
+      "ticket_id": "t-natural-map-border",
+      "at": "2026-09-29T13:47:18.918Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "91",
+      "ticket_id": "t-natural-lane",
+      "at": "2026-09-29T14:04:44.893Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "92",
+      "ticket_id": "t-diorama-polish",
+      "at": "2026-09-29T14:15:26.997Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "93",
+      "ticket_id": "t-mainboss-cape-asset",
+      "at": "2026-09-29T14:38:23.211Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "94",
+      "ticket_id": "t-mainboss-cape-asset",
+      "at": "2026-09-29T15:19:36.441Z",
+      "actor": "someone",
+      "text": "moved to Complete"
+    },
+    {
+      "id": "95",
+      "ticket_id": "t-ember-wraith-boss-battle",
+      "at": "2026-09-29T15:25:10.607Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "96",
+      "ticket_id": "t-franco-boss-name",
+      "at": "2026-09-30T09:52:33.810Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "97",
+      "ticket_id": "t-tower-branches",
+      "at": "2026-09-30T11:39:31.178Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "98",
+      "ticket_id": "t-branch-promo-infographic",
+      "at": "2026-09-30T11:44:17.607Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "99",
+      "ticket_id": "t-feature-toggle-manager",
+      "at": "2026-09-30T11:51:58.752Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "100",
+      "ticket_id": "t-tower-branches",
+      "at": "2026-09-30T12:08:58.055Z",
+      "actor": "someone",
+      "text": "Merged feature/ken-new-changes (96a15e4). Balance gate is saturated: default bot wins 100% merged, 99.9% on pre-merge 952825d (the ungated 2026-09-28 tower/aggro rework) vs 84% on 09-24. Branch tuning is blocked on a gate that can discriminate."
+    },
+    {
+      "id": "101",
+      "ticket_id": "t-rts-loop",
+      "at": "2026-09-30T14:16:08.448Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "102",
+      "ticket_id": "t-procedural-terrain",
+      "at": "2026-10-01T00:18:57.745Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "103",
+      "ticket_id": "t-codex-imagegen-skill",
+      "at": "2026-10-01T00:18:58.132Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "104",
+      "ticket_id": "t-drop-inspiration-ref",
+      "at": "2026-10-01T00:18:58.524Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "105",
+      "ticket_id": "t-procedural-terrain",
+      "at": "2026-10-01T02:05:19.066Z",
+      "actor": "someone",
+      "text": "moved to Complete"
+    },
+    {
+      "id": "106",
+      "ticket_id": "t-drop-inspiration-ref",
+      "at": "2026-10-01T02:05:19.819Z",
+      "actor": "someone",
+      "text": "moved to Complete"
+    },
+    {
+      "id": "107",
+      "ticket_id": "t-codex-imagegen-skill",
+      "at": "2026-10-01T02:05:20.565Z",
+      "actor": "someone",
+      "text": "moved to Complete"
+    },
+    {
+      "id": "108",
+      "ticket_id": "t-hero-meshy-model",
+      "at": "2026-10-01T05:10:00.055Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "109",
+      "ticket_id": "t-hero-meshy-model",
+      "at": "2026-10-01T05:40:07.379Z",
+      "actor": "someone",
+      "text": "moved to Complete"
+    },
+    {
+      "id": "110",
+      "ticket_id": "t-third-person-camera",
+      "at": "2026-10-01T05:58:11.893Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "111",
+      "ticket_id": "t-third-person-camera",
+      "at": "2026-10-01T06:05:32.205Z",
+      "actor": "someone",
+      "text": "Pushed 4c037d6. Kept open until Ken tries real WASD / mouse-orbit input (CLI could not press keys)."
+    },
+    {
+      "id": "112",
+      "ticket_id": "t-hero-fire-aura",
+      "at": "2026-10-01T09:47:57.607Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "113",
+      "ticket_id": "t-hero-fire-aura",
+      "at": "2026-10-01T09:49:11.036Z",
+      "actor": "someone",
+      "text": "moved to Complete"
+    },
+    {
+      "id": "114",
+      "ticket_id": "t-hero-cliff-drop",
+      "at": "2026-10-01T10:35:03.461Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "115",
+      "ticket_id": "t-autopilot-focus",
+      "at": "2026-10-01T10:35:03.895Z",
+      "actor": "someone",
+      "text": "created"
+    },
+    {
+      "id": "116",
+      "ticket_id": "t-hero-cliff-drop",
+      "at": "2026-10-01T14:04:57.981Z",
+      "actor": "someone",
+      "text": "moved to Complete"
+    },
+    {
+      "id": "117",
+      "ticket_id": "t-third-person-camera",
+      "at": "2026-10-01T14:04:59.666Z",
+      "actor": "someone",
+      "text": "moved to Complete"
+    },
+    {
+      "id": "118",
+      "ticket_id": "t-autopilot-focus",
+      "at": "2026-10-01T14:05:01.324Z",
+      "actor": "someone",
+      "text": "moved to Complete"
+    }
+  ],
+  "epics": [],
+  "milestones": []
+}

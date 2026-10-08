@@ -53,9 +53,12 @@ export async function planFromParams(bag: ParamBag): Promise<LinkPlan> {
       title,
       // Same rule as Paste a list: a line ending in a question mark is a question.
       kind: /\?\s*$/.test(title) ? "question" : "feature",
-      status: "todo",
+      status: "backlog",
       assignee: "",
-      section: "Unsorted",
+      epic: "",
+      milestone: "",
+      priority: "p2",
+      estimate: "",
       branch: "",
       notes: "",
     };

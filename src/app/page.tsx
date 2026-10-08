@@ -4,10 +4,28 @@ import { AuthButtons } from "@/components/AuthButtons";
 import { resolveViewer } from "@/lib/authz";
 import { type LinkPlan, type ParamBag } from "@/lib/link";
 import { planFromParams } from "@/lib/linkPlan";
-import { listActivity, listTickets } from "@/lib/tickets";
+import { getBoard } from "@/lib/containers";
+import { listActivity } from "@/lib/tickets";
 import type { Viewer } from "@/lib/types";
+import { resolveTicketId } from "@/lib/tickets";
+import { getTicket } from "@/lib/tickets";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+/** A shared ticket link unfurls with the ticket's number and title instead of the generic name. */
+export async function generateMetadata({ searchParams }: { searchParams: Promise<ParamBag> }): Promise<Metadata> {
+  try {
+    const ref = (await searchParams).ticket;
+    if (typeof ref !== "string") return {};
+    const t = await getTicket(await resolveTicketId(ref));
+    if (!t) return {};
+    const title = `#${t.number} ${t.title.replace(/\*\*/g, "")}`;
+    return { title, openGraph: { title } };
+  } catch {
+    return {};
+  }
+}
 
 async function currentOrigin() {
   const h = await headers();
@@ -86,15 +104,16 @@ export default async function Page({ searchParams }: { searchParams: Promise<Par
   }
 
   try {
-    const [tickets, activity] = await Promise.all([listTickets(), listActivity({ limit: 100 })]);
+    const [board, activity] = await Promise.all([getBoard(), listActivity({ limit: 100 })]);
     const plan: LinkPlan = await planFromParams(sp);
 
     return (
       <App
-        initialTickets={tickets}
+        initialBoard={board}
         initialActivity={activity}
         viewer={viewer}
         plan={plan}
+        openRef={typeof sp.ticket === "string" ? sp.ticket : null}
         origin={origin}
         auth={<AuthButtons viewer={viewer} />}
       />

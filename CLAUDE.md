@@ -24,7 +24,30 @@ not moving its tickets. (If you are in the GamePlanning repo instead, see
   Mono pairing and the component shapes are settled; new surfaces are built from the same tokens
   rather than restyled.
 
+- `src/lib/tickets.ts` owns every field's validation in one place, `buildSet`, shared by create and
+  patch. A new ticket field goes there, in `serializeTicket`, in `schema.ts`, in a new
+  `drizzle/NNNN_*.sql` (additive and idempotent, so it is safe on the live database), and in
+  `pickPatch` in `src/lib/api.ts`, which is the allowlist of keys a request body may set.
+- Epics and milestones live in `src/lib/containers.ts` and have no event log on purpose. Their
+  version and `updated_at` are enough for things that change this rarely.
+- Run `npm run db:export` before anything that rewrites data. `db:seed -- --reset` wipes the lot.
+
+- Ticket numbers (`tickets.number`, shown `#12`) come from the `tickets_number_seq` sequence and
+  are never reused. `resolveTicketId` in `tickets.ts` turns a slug, `12` or `#12` into an id, and every
+  `/api/tickets/:id` route calls it. The short share link is `/t/<ref>`, which redirects to `/?ticket=<ref>`.
+
 ## Things that look like bugs and are not
+
+- **A PATCH that only changes `rank` writes no history and keeps `updated_at`.** It still bumps
+  `version`. Dragging a card up a column is not news, and logging it would drown the Activity tab.
+- **`todo` is labelled Ready.** The status ids `todo`, `in_progress` and `done` are the original
+  contract; agents that predate the five-stage flow depend on them. Relabel, never rename.
+- **A ticket "waiting" on a dependency is amber; a hand-written `blocked_reason` is red.** Both
+  count as blocked, because the board should not hide either, but only one needs a human.
+- **Numbers can skip.** A create that loses a duplicate-id race still consumes a sequence value. That
+  is the price of never reusing one.
+- **`tickets.section` is still in the database.** Nothing reads or writes it. The migration did not
+  drop it so that nothing here is destructive.
 
 - **Only `**bold**` renders in titles.** One rule, deliberately, so game keywords stand out. It is
   not meant to grow into markdown.

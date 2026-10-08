@@ -11,6 +11,11 @@ async function GETHandler(req: Request) {
     status: sp.get("status") ?? undefined,
     assignee: sp.get("assignee") ?? undefined,
     q: sp.get("q") ?? undefined,
+    epic: sp.get("epic") ?? undefined,
+    milestone: sp.get("milestone") ?? undefined,
+    priority: sp.get("priority") ?? undefined,
+    kind: sp.get("kind") ?? undefined,
+    label: sp.get("label") ?? undefined,
   });
   return json({ tickets });
 }
@@ -28,7 +33,7 @@ async function POSTHandler(req: Request) {
       id: body.id === undefined || body.id === null ? null : String(body.id),
       title: String(body.title ?? ""),
       ...fields,
-    } as Parameters<typeof createTicket>[0],
+    },
     actorLabel(gate.actor, typeof body.by === "string" ? body.by : null),
     typeof body.note === "string" && body.note.trim() ? body.note.trim() : "created",
   );
