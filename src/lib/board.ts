@@ -6,7 +6,8 @@ import type { Epic, Ticket } from "./types";
  * the server can share them.
  */
 
-export type ChecklistItem = { text: string; checked: boolean; line: number };
+/** `raw` keeps trailing spaces, so an editor bound to it does not eat the space being typed. */
+export type ChecklistItem = { text: string; raw: string; checked: boolean; line: number };
 
 const ITEM = /^\s*[-*]\s+\[( |x|X)\]\s+(.*)$/;
 
@@ -15,7 +16,7 @@ export function checklist(criteria: string): { items: ChecklistItem[]; done: num
   const items: ChecklistItem[] = [];
   criteria.split("\n").forEach((raw, line) => {
     const m = ITEM.exec(raw);
-    if (m) items.push({ text: m[2].trim(), checked: m[1] !== " ", line });
+    if (m) items.push({ text: m[2].trim(), raw: m[2], checked: m[1] !== " ", line });
   });
   return { items, done: items.filter((i) => i.checked).length, total: items.length };
 }
@@ -27,6 +28,52 @@ export function toggleLine(criteria: string, line: number): string {
   if (!m) return criteria;
   lines[line] = lines[line].replace(/\[( |x|X)\]/, m[1] === " " ? "[x]" : "[ ]");
   return lines.join("\n");
+}
+
+/** Rewrites one checklist item's text, keeping its bullet and tick as they were. */
+export function setItemText(criteria: string, line: number, text: string): string {
+  const lines = criteria.split("\n");
+  const m = /^(\s*[-*]\s+\[(?: |x|X)\]\s+)/.exec(lines[line] ?? "");
+  if (!m) return criteria;
+  lines[line] = m[1] + text.replace(/\n/g, " ");
+  return lines.join("\n");
+}
+
+/** Drops one line. */
+export function removeLine(criteria: string, line: number): string {
+  const lines = criteria.split("\n");
+  if (line < 0 || line >= lines.length) return criteria;
+  lines.splice(line, 1);
+  return lines.join("\n");
+}
+
+/**
+ * Inserts an unticked item after `line` (or at the end when `line` is -1) and
+ * returns the new text with the line it landed on.
+ */
+export function insertItem(criteria: string, line: number, text = ""): { criteria: string; line: number } {
+  const lines = criteria === "" ? [] : criteria.split("\n");
+  // Appending: tuck in after the last non-blank line rather than past trailing blanks.
+  let at = line + 1;
+  if (line < 0) {
+    at = lines.length;
+    while (at > 0 && lines[at - 1].trim() === "") at--;
+  }
+  lines.splice(at, 0, `- [ ] ${text.replace(/\n/g, " ")}`);
+  return { criteria: lines.join("\n"), line: at };
+}
+
+/** True when every non-blank line is a checklist item, so the list editor shows all of it. */
+export function isPureChecklist(criteria: string): boolean {
+  return criteria.split("\n").every((l) => l.trim() === "" || ITEM.test(l));
+}
+
+/** Removes items left with no text, so an abandoned "add" does not save as an empty box. */
+export function tidyCriteria(criteria: string): string {
+  return criteria
+    .split("\n")
+    .filter((l) => !/^\s*[-*]\s+\[( |x|X)\]\s*$/.test(l))
+    .join("\n");
 }
 
 /** Dependencies that are not finished yet. */

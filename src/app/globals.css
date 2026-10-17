@@ -1710,6 +1710,102 @@ dialog.wide.split {
   line-height: 1;
 }
 
+/* Acceptance criteria, edited in place as a checklist. */
+.crit-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.crit-count {
+  font-family: var(--mono);
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-3);
+}
+
+.crit-head .spacer {
+  flex: 1;
+}
+
+.crit-head .cmt-act {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+.checks.edit {
+  gap: 2px;
+}
+
+.checks.edit li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 6px;
+  padding: 0 4px;
+}
+
+.checks.edit li:hover,
+.checks.edit li:focus-within {
+  background: var(--surface-2);
+}
+
+.checks.edit input[type="checkbox"] {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.f .checks.edit input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 5px 6px;
+}
+
+.f .checks.edit input[type="text"]:focus {
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+.f .checks.edit input[type="text"].done {
+  color: var(--ink-3);
+  text-decoration: line-through;
+}
+
+.crit-del {
+  flex: none;
+  background: none;
+  border: 0;
+  padding: 0 4px;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--ink-3);
+  cursor: pointer;
+  opacity: 0;
+}
+
+.checks.edit li:hover .crit-del,
+.checks.edit li:focus-within .crit-del,
+.crit-del:focus-visible {
+  opacity: 1;
+}
+
+.crit-del:hover {
+  color: var(--danger);
+}
+
+@media (hover: none) {
+  .crit-del {
+    opacity: 1;
+  }
+}
+
 .checks label {
   display: flex;
   gap: 8px;

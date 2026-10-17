@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
 import { ESTIMATES, KINDS, PEOPLE, PRIORITIES, STATUSES } from "@/lib/constants";
-import { checklist, toggleLine } from "@/lib/board";
+import { tidyCriteria } from "@/lib/board";
 import { composeLink, LINK_FIELDS, LINK_TO_TICKET, type LinkField } from "@/lib/link";
 import {
   ApiError,
@@ -17,6 +17,7 @@ import {
 import { ago, absolute } from "@/lib/time";
 import type { Epic, Milestone, Ticket, TicketComment, TicketEvent } from "@/lib/types";
 import { Comments } from "./Comments";
+import { CriteriaEditor } from "./CriteriaEditor";
 import { Rich } from "./ui";
 
 const BLANK: TicketFields = {
@@ -181,8 +182,10 @@ export function TicketDialog({
   const set = <K extends keyof TicketFields>(k: K, v: TicketFields[K]) =>
     setForm((f) => ({ ...f, [k]: v }));
 
-  const current = useMemo(() => ({ ...form, labels: parseLabels(labelsText) }), [form, labelsText]);
-  const list = useMemo(() => checklist(form.criteria), [form.criteria]);
+  const current = useMemo(
+    () => ({ ...form, labels: parseLabels(labelsText), criteria: tidyCriteria(form.criteria) }),
+    [form, labelsText],
+  );
   const byId = useMemo(() => new Map(tickets.map((t) => [t.id, t])), [tickets]);
   const depChoices = tickets
     .filter((t) => t.id !== ticket?.id && !form.depends_on.includes(t.id))
@@ -474,34 +477,11 @@ export function TicketDialog({
               />
             </label>
 
-            <div className="f">
-              Acceptance criteria
-              {list.total > 0 && (
-                <ul className="checks">
-                  {list.items.map((it) => (
-                    <li key={it.line}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={it.checked}
-                          onChange={() => set("criteria", toggleLine(form.criteria, it.line))}
-                        />
-                        <span className={it.checked ? "done" : ""}>
-                          <Rich text={it.text} />
-                        </span>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <textarea
-                id="fCriteria"
-                maxLength={4000}
-                placeholder={"- [ ] One line per check\n- [ ] Done means all of these are ticked"}
-                value={form.criteria}
-                onChange={(e) => set("criteria", e.target.value)}
-              />
-            </div>
+            <CriteriaEditor
+              value={form.criteria}
+              onChange={(v) => set("criteria", v)}
+              resetKey={`${open}:${ticket?.id ?? "new"}`}
+            />
 
             {showDecision && (
               <label className="f" htmlFor="fDecision">
