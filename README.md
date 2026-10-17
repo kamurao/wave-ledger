@@ -217,7 +217,7 @@ The contract agents use. Humans authenticate with a session cookie; agents send
 | `GET` | `/api/meta` | The legal values for every enumerated field |
 | `GET` | `/api/tickets` | `{ tickets: [...] }`, in column order. Filters: `status`, `kind`, `priority`, `epic`, `milestone` (`__none` for none), `assignee` (`__none` for unassigned), `label`, `q` |
 | `POST` | `/api/tickets` | Create. Body is the ticket minus timestamps. `epic` and `milestone` work as short names for `epic_id` and `milestone_id` |
-| `GET` | `/api/tickets/:id` | `{ ticket, events }`. `:id` can be the slug (`t-tower-roles`), the number (`12`) or `#12`; every route under `/api/tickets/:id` accepts all three |
+| `GET` | `/api/tickets/:id` | `{ ticket, events, comments }`. `:id` can be the slug (`t-tower-roles`), the number (`12`) or `#12`; every route under `/api/tickets/:id` accepts all three |
 | `PATCH` | `/api/tickets/:id` | Partial update. Honours `If-Match-Version: <version>` |
 | `DELETE` | `/api/tickets/:id` | Off on an open board; agents and signed-in writers only |
 | `GET` `POST` | `/api/epics` | List, create |
@@ -227,6 +227,8 @@ The contract agents use. Humans authenticate with a session cookie; agents send
 | `GET` | `/api/tickets/:id/events` | That ticket's history |
 | `POST` | `/api/tickets/:id/events` | Append one history line |
 | `PATCH` `DELETE` | `/api/tickets/:id/events/:eventId` | Correct (`{ "text": ... }`) or remove one history line. Agents and signed-in writers only; refused on an open board for everyone else, like deleting a ticket |
+| `GET` `POST` | `/api/tickets/:id/comments` | The ticket's comments, oldest first. `POST { "body": ..., "by": "<handle>" }` adds one (up to 4000 characters) and logs `commented: …` to history |
+| `PATCH` `DELETE` | `/api/tickets/:id/comments/:commentId` | Edit (`{ "body": ..., "by": ... }`, stamps `edited_at`) or remove a comment. Its author only (matched on `by`), or any agent or signed-in writer |
 | `GET` | `/api/events` | Flattened activity feed. `limit`, `before` (keyset cursor) |
 | `GET` | `/api/stream` | Server-sent events, one per change |
 | `POST` | `/api/apply` | Applies an update-by-link (see below) |

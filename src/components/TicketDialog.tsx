@@ -15,7 +15,8 @@ import {
   type TicketFields,
 } from "@/lib/client";
 import { ago, absolute } from "@/lib/time";
-import type { Epic, Milestone, Ticket, TicketEvent } from "@/lib/types";
+import type { Epic, Milestone, Ticket, TicketComment, TicketEvent } from "@/lib/types";
+import { Comments } from "./Comments";
 import { Rich } from "./ui";
 
 const BLANK: TicketFields = {
@@ -151,10 +152,13 @@ export function TicketDialog({
     if (!open && el.open) el.close();
   }, [open]);
 
-  const { data: detail, mutate: reloadDetail } = useSWR<{ events: TicketEvent[] }>(
-    open && ticket ? `/api/tickets/${encodeURIComponent(ticket.id)}` : null,
-    fetcher,
-  );
+  // Polled while open so a teammate's comment shows up without reopening.
+  const { data: detail, mutate: reloadDetail } = useSWR<{
+    events: TicketEvent[];
+    comments?: TicketComment[];
+  }>(open && ticket ? `/api/tickets/${encodeURIComponent(ticket.id)}` : null, fetcher, {
+    refreshInterval: 15_000,
+  });
   const [armedEvent, setArmedEvent] = useState<number | null>(null);
 
   async function removeEvent(eventId: number) {
@@ -281,7 +285,7 @@ export function TicketDialog({
   const showDecision = form.kind === "question" || form.decision !== "";
 
   return (
-    <dialog ref={ref} className="wide" onClose={onClose} onCancel={onClose}>
+    <dialog ref={ref} className={ticket ? "wide split" : "wide"} onClose={onClose} onCancel={onClose}>
       <form onSubmit={save}>
         <h3>{ticket ? "Edit ticket" : "Add ticket"}</h3>
 
@@ -291,323 +295,344 @@ export function TicketDialog({
           </p>
         )}
 
-        <label className="f" htmlFor="fTitle">
-          Title
-          <input
-            id="fTitle"
-            required
-            maxLength={300}
-            value={form.title}
-            onChange={(e) => set("title", e.target.value)}
-          />
-        </label>
+        <div className="td-cols">
+          <div className="td-main">
 
-        <div className="row2">
-          <label className="f" htmlFor="fKind">
-            Type
-            <select id="fKind" value={form.kind} onChange={(e) => set("kind", e.target.value)}>
-              {KINDS.map((k) => (
-                <option key={k.id} value={k.id}>
-                  {k.label} — {k.hint}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="f" htmlFor="fStatus">
-            Status
-            <select id="fStatus" value={form.status} onChange={(e) => set("status", e.target.value)}>
-              {STATUSES.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
+            <label className="f" htmlFor="fTitle">
+              Title
+              <input
+                id="fTitle"
+                required
+                maxLength={300}
+                value={form.title}
+                onChange={(e) => set("title", e.target.value)}
+              />
+            </label>
 
-        <div className="row2">
-          <label className="f" htmlFor="fEpic">
-            Epic
-            <select
-              id="fEpic"
-              value={form.epic_id ?? ""}
-              onChange={(e) => set("epic_id", e.target.value || null)}
-            >
-              <option value="">No epic</option>
-              {epics
-                .filter((e) => e.status !== "archived" || e.id === form.epic_id)
-                .map((e) => (
-                  <option key={e.id} value={e.id}>
-                    {e.name}
+            <div className="row2">
+              <label className="f" htmlFor="fKind">
+                Type
+                <select id="fKind" value={form.kind} onChange={(e) => set("kind", e.target.value)}>
+                  {KINDS.map((k) => (
+                    <option key={k.id} value={k.id}>
+                      {k.label} — {k.hint}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="f" htmlFor="fStatus">
+                Status
+                <select id="fStatus" value={form.status} onChange={(e) => set("status", e.target.value)}>
+                  {STATUSES.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
+            <div className="row2">
+              <label className="f" htmlFor="fEpic">
+                Epic
+                <select
+                  id="fEpic"
+                  value={form.epic_id ?? ""}
+                  onChange={(e) => set("epic_id", e.target.value || null)}
+                >
+                  <option value="">No epic</option>
+                  {epics
+                    .filter((e) => e.status !== "archived" || e.id === form.epic_id)
+                    .map((e) => (
+                      <option key={e.id} value={e.id}>
+                        {e.name}
+                      </option>
+                    ))}
+                </select>
+              </label>
+              <label className="f" htmlFor="fMilestone">
+                Milestone
+                <select
+                  id="fMilestone"
+                  value={form.milestone_id ?? ""}
+                  onChange={(e) => set("milestone_id", e.target.value || null)}
+                >
+                  <option value="">Unscheduled</option>
+                  {milestones.map((m) => (
+                    <option key={m.id} value={m.id}>
+                      {m.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
+            <div className="row3">
+              <label className="f" htmlFor="fPriority">
+                Priority
+                <select id="fPriority" value={form.priority} onChange={(e) => set("priority", e.target.value)}>
+                  {PRIORITIES.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.label} · {p.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="f" htmlFor="fEstimate">
+                Size
+                <select
+                  id="fEstimate"
+                  value={form.estimate ?? ""}
+                  onChange={(e) => set("estimate", e.target.value || null)}
+                >
+                  <option value="">Unsized</option>
+                  {ESTIMATES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="f" htmlFor="fAssignee">
+                Assignee
+                <select
+                  id="fAssignee"
+                  value={form.assignee ?? ""}
+                  onChange={(e) => set("assignee", e.target.value || null)}
+                >
+                  <option value="">Unassigned</option>
+                  {PEOPLE.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      @{p.id}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
+            <label className="f" htmlFor="fLabels">
+              Labels
+              <input
+                id="fLabels"
+                placeholder="comma, separated, lowercase"
+                value={labelsText}
+                onChange={(e) => setLabelsText(e.target.value)}
+              />
+            </label>
+
+            <div className="f">
+              Depends on
+              {form.depends_on.length > 0 && (
+                <ul className="deps">
+                  {form.depends_on.map((id) => {
+                    const d = byId.get(id);
+                    return (
+                      <li key={id} className={d?.status === "done" ? "met" : ""}>
+                        <span>{d ? <Rich text={d.title} /> : id}</span>
+                        <button
+                          type="button"
+                          aria-label={`Remove dependency ${id}`}
+                          onClick={() =>
+                            set(
+                              "depends_on",
+                              form.depends_on.filter((x) => x !== id),
+                            )
+                          }
+                        >
+                          ×
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+              <select
+                aria-label="Add a dependency"
+                value={addDep}
+                onChange={(e) => {
+                  if (e.target.value) set("depends_on", [...form.depends_on, e.target.value]);
+                  setAddDep("");
+                }}
+              >
+                <option value="">Add a ticket this waits on…</option>
+                {depChoices.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.title.replace(/\*\*/g, "")}
                   </option>
                 ))}
-            </select>
-          </label>
-          <label className="f" htmlFor="fMilestone">
-            Milestone
-            <select
-              id="fMilestone"
-              value={form.milestone_id ?? ""}
-              onChange={(e) => set("milestone_id", e.target.value || null)}
-            >
-              <option value="">Unscheduled</option>
-              {milestones.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
+              </select>
+            </div>
 
-        <div className="row3">
-          <label className="f" htmlFor="fPriority">
-            Priority
-            <select id="fPriority" value={form.priority} onChange={(e) => set("priority", e.target.value)}>
-              {PRIORITIES.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.label} · {p.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="f" htmlFor="fEstimate">
-            Size
-            <select
-              id="fEstimate"
-              value={form.estimate ?? ""}
-              onChange={(e) => set("estimate", e.target.value || null)}
-            >
-              <option value="">Unsized</option>
-              {ESTIMATES.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="f" htmlFor="fAssignee">
-            Assignee
-            <select
-              id="fAssignee"
-              value={form.assignee ?? ""}
-              onChange={(e) => set("assignee", e.target.value || null)}
-            >
-              <option value="">Unassigned</option>
-              {PEOPLE.map((p) => (
-                <option key={p.id} value={p.id}>
-                  @{p.id}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
+            <label className="f" htmlFor="fBlocked">
+              Blocked because
+              <input
+                id="fBlocked"
+                maxLength={300}
+                placeholder="Leave empty if nothing is in the way"
+                value={form.blocked_reason}
+                onChange={(e) => set("blocked_reason", e.target.value)}
+              />
+            </label>
 
-        <label className="f" htmlFor="fLabels">
-          Labels
-          <input
-            id="fLabels"
-            placeholder="comma, separated, lowercase"
-            value={labelsText}
-            onChange={(e) => setLabelsText(e.target.value)}
-          />
-        </label>
+            <div className="f">
+              Acceptance criteria
+              {list.total > 0 && (
+                <ul className="checks">
+                  {list.items.map((it) => (
+                    <li key={it.line}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={it.checked}
+                          onChange={() => set("criteria", toggleLine(form.criteria, it.line))}
+                        />
+                        <span className={it.checked ? "done" : ""}>
+                          <Rich text={it.text} />
+                        </span>
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <textarea
+                id="fCriteria"
+                maxLength={4000}
+                placeholder={"- [ ] One line per check\n- [ ] Done means all of these are ticked"}
+                value={form.criteria}
+                onChange={(e) => set("criteria", e.target.value)}
+              />
+            </div>
 
-        <div className="f">
-          Depends on
-          {form.depends_on.length > 0 && (
-            <ul className="deps">
-              {form.depends_on.map((id) => {
-                const d = byId.get(id);
-                return (
-                  <li key={id} className={d?.status === "done" ? "met" : ""}>
-                    <span>{d ? <Rich text={d.title} /> : id}</span>
-                    <button
-                      type="button"
-                      aria-label={`Remove dependency ${id}`}
-                      onClick={() =>
-                        set(
-                          "depends_on",
-                          form.depends_on.filter((x) => x !== id),
-                        )
-                      }
-                    >
-                      ×
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-          <select
-            aria-label="Add a dependency"
-            value={addDep}
-            onChange={(e) => {
-              if (e.target.value) set("depends_on", [...form.depends_on, e.target.value]);
-              setAddDep("");
-            }}
-          >
-            <option value="">Add a ticket this waits on…</option>
-            {depChoices.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.title.replace(/\*\*/g, "")}
-              </option>
-            ))}
-          </select>
-        </div>
+            {showDecision && (
+              <label className="f" htmlFor="fDecision">
+                Decision
+                <textarea
+                  id="fDecision"
+                  maxLength={2000}
+                  placeholder="The answer, and the reason. Fill this in before moving a question to Done."
+                  value={form.decision}
+                  onChange={(e) => set("decision", e.target.value)}
+                />
+              </label>
+            )}
 
-        <label className="f" htmlFor="fBlocked">
-          Blocked because
-          <input
-            id="fBlocked"
-            maxLength={300}
-            placeholder="Leave empty if nothing is in the way"
-            value={form.blocked_reason}
-            onChange={(e) => set("blocked_reason", e.target.value)}
-          />
-        </label>
+            <div className="row2">
+              <label className="f" htmlFor="fDoc">
+                Design doc
+                <input
+                  id="fDoc"
+                  maxLength={500}
+                  placeholder="Link or path to the spec"
+                  value={form.design_doc}
+                  onChange={(e) => set("design_doc", e.target.value)}
+                />
+              </label>
+              <label className="f" htmlFor="fBranch">
+                Branch
+                <input
+                  id="fBranch"
+                  placeholder="feature/example"
+                  maxLength={200}
+                  value={form.branch}
+                  onChange={(e) => set("branch", e.target.value)}
+                />
+              </label>
+            </div>
 
-        <div className="f">
-          Acceptance criteria
-          {list.total > 0 && (
-            <ul className="checks">
-              {list.items.map((it) => (
-                <li key={it.line}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={it.checked}
-                      onChange={() => set("criteria", toggleLine(form.criteria, it.line))}
-                    />
-                    <span className={it.checked ? "done" : ""}>
-                      <Rich text={it.text} />
-                    </span>
-                  </label>
-                </li>
-              ))}
-            </ul>
-          )}
-          <textarea
-            id="fCriteria"
-            maxLength={4000}
-            placeholder={"- [ ] One line per check\n- [ ] Done means all of these are ticked"}
-            value={form.criteria}
-            onChange={(e) => set("criteria", e.target.value)}
-          />
-        </div>
+            <label className="f" htmlFor="fNotes">
+              Notes
+              <textarea
+                id="fNotes"
+                maxLength={4000}
+                value={form.notes}
+                onChange={(e) => set("notes", e.target.value)}
+              />
+            </label>
 
-        {showDecision && (
-          <label className="f" htmlFor="fDecision">
-            Decision
-            <textarea
-              id="fDecision"
-              maxLength={2000}
-              placeholder="The answer, and the reason. Fill this in before moving a question to Done."
-              value={form.decision}
-              onChange={(e) => set("decision", e.target.value)}
-            />
-          </label>
-        )}
+            <p className="hint">Wrap keywords in **double asterisks** to bold them in titles.</p>
 
-        <div className="row2">
-          <label className="f" htmlFor="fDoc">
-            Design doc
-            <input
-              id="fDoc"
-              maxLength={500}
-              placeholder="Link or path to the spec"
-              value={form.design_doc}
-              onChange={(e) => set("design_doc", e.target.value)}
-            />
-          </label>
-          <label className="f" htmlFor="fBranch">
-            Branch
-            <input
-              id="fBranch"
-              placeholder="feature/example"
-              maxLength={200}
-              value={form.branch}
-              onChange={(e) => set("branch", e.target.value)}
-            />
-          </label>
-        </div>
+            {error && <p className="note err">{error}</p>}
 
-        <label className="f" htmlFor="fNotes">
-          Notes
-          <textarea
-            id="fNotes"
-            maxLength={4000}
-            value={form.notes}
-            onChange={(e) => set("notes", e.target.value)}
-          />
-        </label>
+            {link && (
+              <div className="linkbox">
+                <input readOnly value={link} onFocus={(e) => e.currentTarget.select()} />
+                <span className="hint">copied</span>
+              </div>
+            )}
 
-        <p className="hint">Wrap keywords in **double asterisks** to bold them in titles.</p>
+            <div className="actions">
+              <button type="submit" className="btn primary" disabled={!canWrite || busy}>
+                {busy ? "Saving…" : "Save"}
+              </button>
+              <button type="button" className="btn" onClick={onClose}>
+                Cancel
+              </button>
+              {ticket && (
+                <button type="button" className="btn" onClick={shareTicket} title="Copy a link that opens this ticket">
+                  {shared ? "Copied" : `Share #${ticket.number}`}
+                </button>
+              )}
+              <button type="button" className="btn" onClick={copyLink} title="Copy a link that applies the changes you have made here">
+                Copy change link
+              </button>
+              <span className="spacer" />
+              {ticket && canDelete && (
+                <button type="button" className="btn danger" onClick={remove} disabled={busy}>
+                  {armed ? "Click again to delete" : "Delete"}
+                </button>
+              )}
+            </div>
 
-        {error && <p className="note err">{error}</p>}
-
-        {link && (
-          <div className="linkbox">
-            <input readOnly value={link} onFocus={(e) => e.currentTarget.select()} />
-            <span className="hint">copied</span>
+            {!canWrite && (
+              <p className="hint">
+                You are signed out or not on the writer list. Copy a link instead and send it to someone
+                who can apply it.
+              </p>
+            )}
           </div>
-        )}
 
-        <div className="actions">
-          <button type="submit" className="btn primary" disabled={!canWrite || busy}>
-            {busy ? "Saving…" : "Save"}
-          </button>
-          <button type="button" className="btn" onClick={onClose}>
-            Cancel
-          </button>
           {ticket && (
-            <button type="button" className="btn" onClick={shareTicket} title="Copy a link that opens this ticket">
-              {shared ? "Copied" : `Share #${ticket.number}`}
-            </button>
-          )}
-          <button type="button" className="btn" onClick={copyLink} title="Copy a link that applies the changes you have made here">
-            Copy change link
-          </button>
-          <span className="spacer" />
-          {ticket && canDelete && (
-            <button type="button" className="btn danger" onClick={remove} disabled={busy}>
-              {armed ? "Click again to delete" : "Delete"}
-            </button>
+            <aside className="td-side">
+              <Comments
+                ticketId={ticket.id}
+                comments={detail?.comments ?? []}
+                canWrite={canWrite}
+                canDelete={canDelete}
+                me={me}
+                onChanged={async () => {
+                  await reloadDetail();
+                  onChanged();
+                }}
+              />
+
+              {detail?.events && detail.events.length > 0 && (
+                <details className="history">
+                  <summary>History ({detail.events.length})</summary>
+                  <ul className="log">
+                    {detail.events.slice(0, 20).map((ev) => (
+                      <li key={ev.id}>
+                        <time title={absolute(ev.at)}>{ago(ev.at)}</time>
+                        <span>
+                          <span className="by">{ev.actor}</span> {ev.text}
+                          {canDelete && (
+                            <button
+                              type="button"
+                              className="ev-del"
+                              onClick={() => void removeEvent(ev.id)}
+                              aria-label="Delete this history entry"
+                            >
+                              {armedEvent === ev.id ? "click again to delete" : "delete"}
+                            </button>
+                          )}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+            </aside>
           )}
         </div>
-
-        {!canWrite && (
-          <p className="hint">
-            You are signed out or not on the writer list. Copy a link instead and send it to someone
-            who can apply it.
-          </p>
-        )}
-
-        {ticket && detail?.events && detail.events.length > 0 && (
-          <details className="history">
-            <summary>History ({detail.events.length})</summary>
-            <ul className="log">
-              {detail.events.slice(0, 20).map((ev) => (
-                <li key={ev.id}>
-                  <time title={absolute(ev.at)}>{ago(ev.at)}</time>
-                  <span>
-                    <span className="by">{ev.actor}</span> {ev.text}
-                    {canDelete && (
-                      <button
-                        type="button"
-                        className="ev-del"
-                        onClick={() => void removeEvent(ev.id)}
-                        aria-label="Delete this history entry"
-                      >
-                        {armedEvent === ev.id ? "click again to delete" : "delete"}
-                      </button>
-                    )}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </details>
-        )}
       </form>
     </dialog>
   );

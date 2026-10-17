@@ -76,6 +76,17 @@ export type TicketEvent = {
   text: string;
 };
 
+export type TicketComment = {
+  id: number;
+  ticket_id: string;
+  at: string;
+  /** The same label history uses: `@kamurao`, `claude`, `someone`. */
+  author: string;
+  body: string;
+  /** Set once the author has changed the text. */
+  edited_at: string | null;
+};
+
 export type ActivityRow = TicketEvent & { title: string };
 
 export type Viewer = {

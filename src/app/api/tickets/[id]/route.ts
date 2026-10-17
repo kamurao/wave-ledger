@@ -1,5 +1,6 @@
 import { actorLabel, canDelete } from "@/lib/authz";
 import { apiError, json, parseIfMatch, pickPatch, readJson, requireWriter, route } from "@/lib/api";
+import { getComments } from "@/lib/comments";
 import { deleteTicket, getEvents, getTicket, patchTicket, resolveTicketId } from "@/lib/tickets";
 
 export const runtime = "nodejs";
@@ -11,8 +12,8 @@ async function GETHandler(_req: Request, ctx: Ctx) {
   const id = await resolveTicketId((await ctx.params).id);
   const ticket = await getTicket(id);
   if (!ticket) return apiError(404, "no such ticket");
-  const events = await getEvents(id);
-  return json({ ticket, events });
+  const [events, comments] = await Promise.all([getEvents(id), getComments(id)]);
+  return json({ ticket, events, comments });
 }
 
 async function PATCHHandler(req: Request, ctx: Ctx) {

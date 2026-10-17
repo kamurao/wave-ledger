@@ -77,7 +77,23 @@ export const ticketEvents = pgTable(
   (t) => [index("ticket_events_ticket_id_at_idx").on(t.ticketId, t.at.desc())],
 );
 
+export const ticketComments = pgTable(
+  "ticket_comments",
+  {
+    id: bigserial("id", { mode: "number" }).primaryKey(),
+    ticketId: text("ticket_id")
+      .notNull()
+      .references(() => tickets.id, { onDelete: "cascade" }),
+    at: timestamp("at", { withTimezone: true }).notNull().defaultNow(),
+    author: text("author").notNull(),
+    body: text("body").notNull(),
+    editedAt: timestamp("edited_at", { withTimezone: true }),
+  },
+  (t) => [index("ticket_comments_ticket_id_at_idx").on(t.ticketId, t.at)],
+);
+
 export type TicketRow = typeof tickets.$inferSelect;
 export type TicketEventRow = typeof ticketEvents.$inferSelect;
+export type TicketCommentRow = typeof ticketComments.$inferSelect;
 export type EpicRow = typeof epics.$inferSelect;
 export type MilestoneRow = typeof milestones.$inferSelect;

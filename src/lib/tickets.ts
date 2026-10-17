@@ -475,7 +475,7 @@ export async function deleteTicket(id: string): Promise<boolean> {
  * A cheap fingerprint of the whole board, used by the SSE route to notice change
  * without streaming rows. Catches inserts and deletes (the count), edits (the
  * version sum) and bare event appends (the highest event id), across tickets,
- * epics and milestones.
+ * comments, epics and milestones.
  */
 export async function changeToken(): Promise<string> {
   const res = await db.execute<{ token: string }>(sql`
@@ -485,6 +485,8 @@ export async function changeToken(): Promise<string> {
       || ':' || (select coalesce(max(id), 0) from ticket_events)::text
       || ':' || (select count(*) from ticket_events)::text
       || ':' || (select coalesce(sum(length(text)), 0) from ticket_events)::text
+      || ':' || (select count(*) from ticket_comments)::text
+      || ':' || (select coalesce(max(coalesce(edited_at, at)), 'epoch')::text from ticket_comments)
       || ':' || (select count(*) from epics)::text
       || ':' || (select coalesce(sum(version), 0) from epics)::text
       || ':' || (select count(*) from milestones)::text

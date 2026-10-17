@@ -86,6 +86,27 @@ export function editTicketEvent(ticketId: string, eventId: number, text: string)
   });
 }
 
+export function addComment(ticketId: string, body: string, by?: string) {
+  return send(`/api/tickets/${encodeURIComponent(ticketId)}/comments`, {
+    method: "POST",
+    body: JSON.stringify({ body, by }),
+  });
+}
+
+export function editComment(ticketId: string, commentId: number, body: string, by?: string) {
+  return send(`/api/tickets/${encodeURIComponent(ticketId)}/comments/${commentId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ body, by }),
+  });
+}
+
+export function deleteComment(ticketId: string, commentId: number, by?: string) {
+  return send(`/api/tickets/${encodeURIComponent(ticketId)}/comments/${commentId}`, {
+    method: "DELETE",
+    body: JSON.stringify({ by }),
+  });
+}
+
 export type EpicFields = {
   name: string;
   summary: string;

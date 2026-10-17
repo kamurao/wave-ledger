@@ -1501,8 +1501,162 @@ p.hint .num {
 
 /* Dialogs */
 dialog.wide {
-  width: min(680px, calc(100% - 32px));
+  width: min(760px, calc(100% - 32px));
   max-height: calc(100dvh - 32px);
+}
+
+/* An existing ticket: the form on the left, its conversation and history beside it. */
+dialog.wide.split {
+  width: min(1200px, calc(100% - 32px));
+}
+
+.td-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+  gap: 20px;
+  align-items: start;
+}
+
+.td-main,
+.td-side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.td-side {
+  border-left: 1px solid var(--line);
+  padding-left: 20px;
+}
+
+@media (max-width: 900px) {
+  .td-cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .td-side {
+    border-left: 0;
+    padding-left: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+}
+
+.comments {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comments h4 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.comments h4 .count {
+  font-family: var(--mono);
+  font-weight: 400;
+  color: var(--ink-3);
+  margin-left: 4px;
+}
+
+.cmt-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cmt-list li {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.cmt-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.cmt-head .by {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.cmt-head time,
+.cmt-head .edited {
+  font-family: var(--mono);
+  color: var(--ink-3);
+}
+
+.cmt-head .spacer {
+  flex: 1;
+}
+
+.cmt-act {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 12px;
+  color: var(--ink-3);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.cmt-act:hover {
+  color: var(--ink);
+}
+
+.cmt-act.del:hover {
+  color: var(--danger);
+}
+
+.cmt-body {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.cmt-new,
+.cmt-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cmt-edit {
+  margin-top: 6px;
+}
+
+.cmt-new textarea,
+.cmt-edit textarea {
+  min-height: 72px;
+  resize: vertical;
+  width: 100%;
+  font-size: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 10px;
+  color: var(--ink);
+}
+
+.cmt-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .row3 {
