@@ -240,8 +240,9 @@ curl -X PATCH ${origin}/api/milestones/m-concept -H "Authorization: Bearer $WAVE
           <h2>Who can write</h2>
           <p>
             This board is running <strong>open</strong>: anyone with the link can add, edit and move
-            tickets, with no sign-in. Deleting is the one thing held back — move a ticket to Done, or set an
-            epic to Archived, instead — so nothing anyone does here is unrecoverable. Agents still send a
+            tickets, with no sign-in. Deleting a ticket moves it to the <strong>Deleted</strong> list under
+            the board, where anyone can open it and press Restore; purging for good and deleting an epic
+            stay with signed-in writers, so nothing anyone does here is unrecoverable. Agents still send a
             token, so their writes stay attributable.
           </p>
           <p>

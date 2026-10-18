@@ -32,6 +32,10 @@ export type Ticket = {
   notes: string;
   /** Sort key within a column; lower is higher up. */
   rank: number;
+  /** When it was deleted, or null while it is on the board. Restoring clears it. */
+  deleted_at: string | null;
+  /** Who deleted it, as the history credits them. */
+  deleted_by: string | null;
   created_at: string;
   updated_at: string;
   version: number;
@@ -97,7 +101,7 @@ export type Viewer = {
   /** Canonical board handle this viewer acts as, when they map to one. */
   handle: string | null;
   canWrite: boolean;
-  /** Deleting needs a verified identity, so an open-board visitor cannot. */
+  /** Purging and rewriting history need a verified identity, so an open-board visitor cannot. */
   canDelete: boolean;
   /** True when the board lets anyone with the link write. */
   openBoard: boolean;

@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { DEFAULT_HANDLE, PEOPLE, type Status } from "@/lib/constants";
 import { byRank, progressOf, rankBetween } from "@/lib/board";
-import { ApiError, fetcher, patchTicket, type TicketPatch } from "@/lib/client";
+import { ApiError, DELETED_KEY, fetcher, patchTicket, type TicketPatch } from "@/lib/client";
 import type { ActivityRow, Board, Epic, Milestone, Ticket, Viewer } from "@/lib/types";
 import type { LinkPlan } from "@/lib/link";
 import { ActivityTab } from "./ActivityTab";
@@ -12,6 +12,7 @@ import { ApplyPanel } from "./ApplyPanel";
 import { BoardTab, NO_FILTERS, type Filters } from "./BoardTab";
 import { BulkDialog } from "./BulkDialog";
 import { EpicDialog, MilestoneDialog } from "./ContainerDialogs";
+import { DeletedList } from "./DeletedList";
 import { EpicsTab } from "./EpicsTab";
 import { RoadmapTab } from "./RoadmapTab";
 import { TicketDialog, type NewTicketDefaults } from "./TicketDialog";
@@ -94,9 +95,11 @@ export function App({
     refreshInterval: live === "live" ? 30_000 : 10_000,
   });
 
+  const { mutate: mutateKey } = useSWRConfig();
   const refresh = useCallback(() => {
     void mutate();
-  }, [mutate]);
+    void mutateKey(DELETED_KEY);
+  }, [mutate, mutateKey]);
   refreshRef.current = refresh;
 
   const tickets = data?.tickets ?? initialBoard.tickets;
@@ -215,7 +218,12 @@ export function App({
     const hit =
       tickets.find((t) => t.id === openRef) ?? tickets.find((t) => String(t.number) === want);
     if (hit) openTicket(hit);
-    else setError(`There is no ticket "${openRef}" on this board.`);
+    else {
+      // Not on the board: it may be in the Deleted list, which the board does not load.
+      fetcher(`/api/tickets/${encodeURIComponent(openRef)}`)
+        .then((d: { ticket: Ticket }) => openTicket(d.ticket))
+        .catch(() => setError(`There is no ticket "${openRef}" on this board.`));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -338,6 +346,7 @@ export function App({
           onPlace={place}
         />
       )}
+      {tab === "board" && <DeletedList now={now} onOpen={openTicket} />}
       {tab === "epics" && (
         <EpicsTab
           epics={epics}

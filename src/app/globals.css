@@ -1898,3 +1898,22 @@ nav.tabs button {
 .log .ev-del:hover {
   color: var(--danger);
 }
+
+/* The Deleted list under the board: quiet until opened. */
+details.deleted-list {
+  margin-top: 16px;
+}
+
+.linkish {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.linkish:hover {
+  text-decoration: underline;
+}

@@ -71,9 +71,22 @@ export function patchTicket(id: string, patch: TicketPatch, version: number, by?
   });
 }
 
-export function deleteTicket(id: string) {
-  return send(`/api/tickets/${encodeURIComponent(id)}`, { method: "DELETE" });
+/** Moves it to the Deleted list; anyone who can write can restore it. */
+export function deleteTicket(id: string, by?: string) {
+  return send(`/api/tickets/${encodeURIComponent(id)}`, { method: "DELETE", body: JSON.stringify({ by }) });
 }
+
+export function restoreTicket(id: string, by?: string) {
+  return send(`/api/tickets/${encodeURIComponent(id)}/restore`, { method: "POST", body: JSON.stringify({ by }) });
+}
+
+/** Removes it for good, history and comments included. Signed-in writers only. */
+export function purgeTicket(id: string) {
+  return send(`/api/tickets/${encodeURIComponent(id)}?purge=1`, { method: "DELETE" });
+}
+
+/** The SWR key of the Deleted list, so a delete or restore anywhere can refresh it. */
+export const DELETED_KEY = "/api/tickets?deleted=1";
 
 export function deleteTicketEvent(ticketId: string, eventId: number) {
   return send(`/api/tickets/${encodeURIComponent(ticketId)}/events/${eventId}`, { method: "DELETE" });

@@ -58,6 +58,9 @@ export const tickets = pgTable("tickets", {
   branch: text("branch").notNull().default(""),
   notes: text("notes").notNull().default(""),
   rank: doublePrecision("rank").notNull().default(0),
+  /** Set while the ticket is in the Deleted list; null while it is on the board. */
+  deletedAt: timestamp("deleted_at", { withTimezone: true }),
+  deletedBy: text("deleted_by"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   version: integer("version").notNull().default(1),

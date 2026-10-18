@@ -37,7 +37,8 @@ Rules:
 - Always send If-Match-Version with the version you just read. A 409 means someone else
   wrote first: re-read the ticket and redo your change on top of theirs.
 - Do not send history or updated_at. The server writes both.
-- Deleting is off on the open board. Move a ticket to done, or set an epic to archived.
+- DELETE /api/tickets/<id> with {"by"} moves a ticket to the Deleted list (POST .../restore undoes it).
+  Only for a duplicate or a ticket opened by mistake; finished or abandoned work goes to done.
 ```
 
 ---

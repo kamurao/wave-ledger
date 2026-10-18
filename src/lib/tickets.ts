@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, ilike, inArray, lt, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, inArray, isNotNull, isNull, lt, or, sql } from "drizzle-orm";
 import { db } from "./db";
 import {
   isEstimate,
@@ -41,6 +41,8 @@ export function serializeTicket(r: TicketRow): Ticket {
     branch: r.branch,
     notes: r.notes,
     rank: r.rank,
+    deleted_at: r.deletedAt ? r.deletedAt.toISOString() : null,
+    deleted_by: r.deletedBy,
     created_at: r.createdAt.toISOString(),
     updated_at: r.updatedAt.toISOString(),
     version: r.version,
@@ -67,10 +69,14 @@ export type TicketFilters = {
   priority?: string;
   kind?: string;
   label?: string;
+  /** Deleted tickets are left out unless asked for: `only` lists the Deleted list, `include` both. */
+  deleted?: "only" | "include";
 };
 
 export async function listTickets(f: TicketFilters = {}): Promise<Ticket[]> {
   const where = [];
+  if (f.deleted === "only") where.push(isNotNull(tickets.deletedAt));
+  else if (f.deleted !== "include") where.push(isNull(tickets.deletedAt));
   if (f.status && isStatus(f.status)) where.push(eq(tickets.status, f.status));
   if (f.kind && isKind(f.kind)) where.push(eq(tickets.kind, f.kind));
   if (f.priority && isPriority(f.priority)) where.push(eq(tickets.priority, f.priority));
@@ -366,7 +372,9 @@ export async function createTicket(
     .onConflictDoNothing()
     .returning();
   if (inserted.length === 0) {
-    return { ok: false, code: "conflict", message: `a ticket with id "${id}" already exists` };
+    const existing = await getTicket(id);
+    const where = existing?.deleted_at ? ` in the Deleted list (#${existing.number}); restore it instead` : "";
+    return { ok: false, code: "conflict", message: `a ticket with id "${id}" already exists${where}` };
   }
   await appendEvent(id, actor, note);
   return { ok: true, ticket: serializeTicket(inserted[0]) };
@@ -383,6 +391,7 @@ function wantsSlug(input: TicketInput) {
 export type PatchResult =
   | { ok: true; ticket: Ticket; changed: string[] }
   | { ok: false; code: "not_found" }
+  | { ok: false; code: "deleted"; ticket: Ticket }
   | { ok: false; code: "conflict"; ticket: Ticket }
   | { ok: false; code: "invalid"; message: string };
 
@@ -400,6 +409,8 @@ export async function patchTicket(
 ): Promise<PatchResult> {
   const [before] = await db.select().from(tickets).where(eq(tickets.id, id)).limit(1);
   if (!before) return { ok: false, code: "not_found" };
+  // A deleted ticket is read-only until it is restored, so nobody edits a card they cannot see.
+  if (before.deletedAt) return { ok: false, code: "deleted", ticket: serializeTicket(before) };
 
   const built = await buildSet(patch, id);
   if (!built.ok) return { ok: false, code: "invalid", message: built.message };
@@ -459,6 +470,41 @@ export async function patchTicket(
   };
 }
 
+export type TrashResult =
+  | { ok: true; ticket: Ticket }
+  | { ok: false; code: "not_found" }
+  | { ok: false; code: "already"; ticket: Ticket };
+
+/**
+ * Moves a ticket to the Deleted list, or brings it back.
+ *
+ * Nothing is dropped: the row keeps its number, history, comments and the
+ * `depends_on` links that point at it. Off the board, a deleted dependency no
+ * longer holds anything up, and a restore puts the link back in force. Like a
+ * PATCH, the state check sits in the UPDATE's WHERE, so two people deleting at
+ * once log it once.
+ */
+export async function setTicketDeleted(id: string, deleted: boolean, actor: string): Promise<TrashResult> {
+  const updated = await db
+    .update(tickets)
+    .set({
+      deletedAt: deleted ? new Date() : null,
+      deletedBy: deleted ? actor : null,
+      updatedAt: new Date(),
+      version: sql`${tickets.version} + 1`,
+    })
+    .where(and(eq(tickets.id, id), deleted ? isNull(tickets.deletedAt) : isNotNull(tickets.deletedAt)))
+    .returning();
+
+  if (updated.length === 0) {
+    const current = await getTicket(id);
+    return current ? { ok: false, code: "already", ticket: current } : { ok: false, code: "not_found" };
+  }
+  await appendEvent(id, actor, deleted ? "deleted" : "restored");
+  return { ok: true, ticket: serializeTicket(updated[0]) };
+}
+
+/** Drops the row, its history and comments for good. Only the purge call reaches this. */
 export async function deleteTicket(id: string): Promise<boolean> {
   const rows = await db.delete(tickets).where(eq(tickets.id, id)).returning({ id: tickets.id });
   if (rows.length > 0) {

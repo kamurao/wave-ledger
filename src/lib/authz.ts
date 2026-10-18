@@ -20,8 +20,9 @@ export type Actor =
  *
  * This is the low-ceremony way to get what the move off the artifact was for —
  * everyone on the project able to write — without standing up an OAuth app.
- * Deleting stays off in this mode (see `canDelete`), so the worst a passer-by
- * can do is reversible.
+ * A delete here only moves a ticket to the Deleted list, which anyone can
+ * restore from; purging and rewriting history stay off (see `canDelete`), so
+ * the worst a passer-by can do is reversible.
  */
 export function isOpenBoard(): boolean {
   const v = (process.env.OPEN_BOARD ?? "").trim().toLowerCase();
@@ -67,7 +68,10 @@ function bearerIsValid(header: string | null): boolean {
   return valid.some((t) => tokensEqual(t, presented));
 }
 
-/** Only signed-in writers and agents may delete; an open-board visitor may not. */
+/**
+ * Only signed-in writers and agents may do what cannot be undone: purge a ticket,
+ * delete an epic or milestone, rewrite history. An open-board visitor may not.
+ */
 export function canDelete(actor: Actor): boolean {
   return actor.kind === "agent" || (actor.kind === "user" && actor.canWrite);
 }

@@ -5,6 +5,14 @@ import { createTicket, listTickets } from "@/lib/tickets";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+/** `?deleted=1` (or `only`) lists the Deleted list; `?deleted=include` lists both. */
+function deletedFilter(v: string | null): "only" | "include" | undefined {
+  const s = (v ?? "").trim().toLowerCase();
+  if (s === "include" || s === "all") return "include";
+  if (s === "1" || s === "true" || s === "only") return "only";
+  return undefined;
+}
+
 async function GETHandler(req: Request) {
   const sp = new URL(req.url).searchParams;
   const tickets = await listTickets({
@@ -16,6 +24,7 @@ async function GETHandler(req: Request) {
     priority: sp.get("priority") ?? undefined,
     kind: sp.get("kind") ?? undefined,
     label: sp.get("label") ?? undefined,
+    deleted: deletedFilter(sp.get("deleted")),
   });
   return json({ tickets });
 }

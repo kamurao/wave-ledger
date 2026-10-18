@@ -12,6 +12,8 @@ import {
   deleteTicketEvent,
   fetcher,
   patchTicket,
+  purgeTicket,
+  restoreTicket,
   type TicketFields,
 } from "@/lib/client";
 import { ago, absolute } from "@/lib/time";
@@ -193,7 +195,7 @@ export function TicketDialog({
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
-    if (!canWrite || busy) return;
+    if (!canWrite || busy || ticket?.deleted_at) return;
     if (!form.title.trim()) {
       setError("A ticket needs a title.");
       return;
@@ -225,19 +227,36 @@ export function TicketDialog({
     }
   }
 
+  const deleted = Boolean(ticket?.deleted_at);
+
+  /**
+   * Delete moves the ticket to the Deleted list, so any writer may; on a deleted
+   * ticket the same button purges it for good, which needs `canDelete`. Both ask
+   * for a second click.
+   */
   async function remove() {
-    if (!ticket || !canDelete || busy) return;
+    if (!ticket || busy || !(deleted ? canDelete : canWrite)) return;
     if (!armed) {
       setArmed(true);
       return;
     }
+    await act(() => (deleted ? purgeTicket(ticket.id) : deleteTicket(ticket.id, me)));
+  }
+
+  async function restore() {
+    if (!ticket || !canWrite || busy) return;
+    await act(() => restoreTicket(ticket.id, me));
+  }
+
+  async function act(call: () => Promise<unknown>) {
     setBusy(true);
     try {
-      await deleteTicket(ticket.id);
+      await call();
       onChanged();
       onClose();
     } catch (err) {
       setError((err as ApiError).message);
+      setArmed(false);
       setBusy(false);
     }
   }
@@ -295,6 +314,14 @@ export function TicketDialog({
         {ticket && (
           <p className="hint">
             <b className="num">#{ticket.number}</b> · <code>{ticket.id}</code> · v{ticket.version}
+          </p>
+        )}
+
+        {ticket?.deleted_at && (
+          <p className="note err">
+            Deleted by {ticket.deleted_by ?? "someone"}{" "}
+            <time title={absolute(ticket.deleted_at)}>{ago(ticket.deleted_at)}</time>. It is off the board
+            and read-only; restore it to edit it again.
           </p>
         )}
 
@@ -541,9 +568,15 @@ export function TicketDialog({
             )}
 
             <div className="actions">
-              <button type="submit" className="btn primary" disabled={!canWrite || busy}>
-                {busy ? "Saving…" : "Save"}
-              </button>
+              {deleted ? (
+                <button type="button" className="btn primary" onClick={restore} disabled={!canWrite || busy}>
+                  {busy ? "Restoring…" : "Restore"}
+                </button>
+              ) : (
+                <button type="submit" className="btn primary" disabled={!canWrite || busy}>
+                  {busy ? "Saving…" : "Save"}
+                </button>
+              )}
               <button type="button" className="btn" onClick={onClose}>
                 Cancel
               </button>
@@ -556,9 +589,15 @@ export function TicketDialog({
                 Copy change link
               </button>
               <span className="spacer" />
-              {ticket && canDelete && (
-                <button type="button" className="btn danger" onClick={remove} disabled={busy}>
-                  {armed ? "Click again to delete" : "Delete"}
+              {ticket && (deleted ? canDelete : canWrite) && (
+                <button
+                  type="button"
+                  className="btn danger"
+                  onClick={remove}
+                  disabled={busy}
+                  title={deleted ? "Remove it for good, with its history and comments" : "Move it to the Deleted list"}
+                >
+                  {armed ? (deleted ? "Click again to delete forever" : "Click again to delete") : deleted ? "Delete forever" : "Delete"}
                 </button>
               )}
             </div>

@@ -41,7 +41,8 @@ Here, the auth layer is ours, and it has two settings.
 
 **Open board** (`OPEN_BOARD=1`) — anyone with the link can write, no sign-in, no OAuth app to
 stand up. This is the least-ceremony way to get what the move was for: everyone on the project
-able to write. Deleting stays off in this mode, so the worst a passer-by can do is reversible, and
+able to write. A delete here only moves a ticket to the Deleted list, and purging stays off, so the
+worst a passer-by can do is reversible, and
 agents still authenticate with their token so their writes stay attributable.
 
 **Signed-in board** (`OPEN_BOARD` unset) — the stricter setting:
@@ -201,7 +202,10 @@ have defaults. `todo` is labelled **Ready** in the UI. The old `section` column 
 Unsorted) is no longer read or written; the migration leaves it in place rather than drop data.
 
 Both id shapes stay supported: human slugs written by agents, and random ids from the UI's add
-button. Deleting an epic or milestone keeps its tickets; deleting a ticket removes it from other
+button. Deleting an epic or milestone keeps its tickets. Deleting a ticket sets `deleted_at` and
+`deleted_by` and takes it off the board and every list; its number, history, comments and the
+`depends_on` links to it stay, and a deleted dependency no longer blocks anything. Restoring puts it
+back where it was. Purging drops the row (with its history and comments) and removes it from other
 tickets' `depends_on`.
 
 ---
@@ -215,18 +219,19 @@ The contract agents use. Humans authenticate with a session cookie; agents send
 | --- | --- | --- |
 | `GET` | `/api/board` | Everything in one read: `{ tickets, epics, milestones, meta }`. The call an agent starts with |
 | `GET` | `/api/meta` | The legal values for every enumerated field |
-| `GET` | `/api/tickets` | `{ tickets: [...] }`, in column order. Filters: `status`, `kind`, `priority`, `epic`, `milestone` (`__none` for none), `assignee` (`__none` for unassigned), `label`, `q` |
+| `GET` | `/api/tickets` | `{ tickets: [...] }`, in column order. Filters: `status`, `kind`, `priority`, `epic`, `milestone` (`__none` for none), `assignee` (`__none` for unassigned), `label`, `q`. Deleted tickets are left out; `deleted=1` lists only them, `deleted=include` both |
 | `POST` | `/api/tickets` | Create. Body is the ticket minus timestamps. `epic` and `milestone` work as short names for `epic_id` and `milestone_id` |
-| `GET` | `/api/tickets/:id` | `{ ticket, events, comments }`. `:id` can be the slug (`t-tower-roles`), the number (`12`) or `#12`; every route under `/api/tickets/:id` accepts all three |
-| `PATCH` | `/api/tickets/:id` | Partial update. Honours `If-Match-Version: <version>` |
-| `DELETE` | `/api/tickets/:id` | Off on an open board; agents and signed-in writers only |
+| `GET` | `/api/tickets/:id` | `{ ticket, events, comments }`, deleted or not (`ticket.deleted_at`). `:id` can be the slug (`t-tower-roles`), the number (`12`) or `#12`; every route under `/api/tickets/:id` accepts all three |
+| `PATCH` | `/api/tickets/:id` | Partial update. Honours `If-Match-Version: <version>`. `410` on a deleted ticket: restore it first |
+| `DELETE` | `/api/tickets/:id` | Moves it to the Deleted list, credited with `{ "by": ... }`; any writer, open board included. Deleting it again is a no-op (`already: true`). `?purge=1` removes it for good: agents and signed-in writers only |
+| `POST` | `/api/tickets/:id/restore` | Puts a deleted ticket back on the board: same column, rank and links. `{ "by": ... }` |
 | `GET` `POST` | `/api/epics` | List, create |
 | `GET` `PATCH` `DELETE` | `/api/epics/:id` | `GET` includes the epic's tickets. `PATCH` honours `If-Match-Version`. To retire one on an open board, PATCH `status` to `archived` |
 | `GET` `POST` | `/api/milestones` | List, create |
 | `GET` `PATCH` `DELETE` | `/api/milestones/:id` | As epics. `target_date` is `YYYY-MM-DD` or null |
 | `GET` | `/api/tickets/:id/events` | That ticket's history |
 | `POST` | `/api/tickets/:id/events` | Append one history line |
-| `PATCH` `DELETE` | `/api/tickets/:id/events/:eventId` | Correct (`{ "text": ... }`) or remove one history line. Agents and signed-in writers only; refused on an open board for everyone else, like deleting a ticket |
+| `PATCH` `DELETE` | `/api/tickets/:id/events/:eventId` | Correct (`{ "text": ... }`) or remove one history line. Agents and signed-in writers only; refused on an open board for everyone else, like purging a ticket |
 | `GET` `POST` | `/api/tickets/:id/comments` | The ticket's comments, oldest first. `POST { "body": ..., "by": "<handle>" }` adds one (up to 4000 characters) and logs `commented: …` to history |
 | `PATCH` `DELETE` | `/api/tickets/:id/comments/:commentId` | Edit (`{ "body": ..., "by": ... }`, stamps `edited_at`) or remove a comment. Its author only (matched on `by`), or any agent or signed-in writer |
 | `GET` | `/api/events` | Flattened activity feed. `limit`, `before` (keyset cursor) |
@@ -291,7 +296,7 @@ cannot write. A change expressed as a query string, so it can travel through cha
 
 Every ticket has a short permanent number, `#12`, from a Postgres sequence. It is shown on cards, in the
 ticket dialog and on the Roadmap, and it is searchable (type `#12` in the board's search box). Numbers
-are never reused, even after a ticket is deleted, so "#12" always means the same ticket.
+are never reused, even after a ticket is purged, so "#12" always means the same ticket.
 
 A ticket can be shared as a link:
 
